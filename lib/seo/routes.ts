@@ -11,12 +11,23 @@ export type CanonicalRouteKind =
   | 'calculator'
   | 'blog-article';
 
+export type SitemapChangeFrequency =
+  | 'always'
+  | 'hourly'
+  | 'daily'
+  | 'weekly'
+  | 'monthly'
+  | 'yearly'
+  | 'never';
+
 export interface CanonicalRouteEntry {
   path: string;
   url: string;
   kind: CanonicalRouteKind;
   indexable: boolean;
   lastModified?: string;
+  changeFrequency: SitemapChangeFrequency;
+  priority: number;
 }
 
 /**
@@ -87,52 +98,70 @@ function buildStaticAndGovernanceRoutes(): CanonicalRouteEntry[] {
     kind: CanonicalRouteKind;
     indexable: boolean;
     lastModified?: string;
+    changeFrequency: SitemapChangeFrequency;
+    priority: number;
   }> = [
     {
       path: '/',
       kind: 'home',
       indexable: true,
       lastModified: homepageLastMod,
+      changeFrequency: 'daily',
+      priority: 1.0,
     },
     {
       path: '/blog/',
       kind: 'blog-index',
       indexable: true,
       lastModified: blogIndexLastMod,
+      changeFrequency: 'weekly',
+      priority: 0.8,
     },
     {
       path: '/about/',
       kind: 'governance',
       indexable: true,
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
     {
       path: '/contact/',
       kind: 'governance',
       indexable: true,
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
     {
       path: '/privacy-policy/',
       kind: 'governance',
       indexable: true,
       lastModified: GOVERNANCE_CONTENT_DATES['/privacy-policy/'],
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
     {
       path: '/terms-and-conditions/',
       kind: 'governance',
       indexable: true,
       lastModified: GOVERNANCE_CONTENT_DATES['/terms-and-conditions/'],
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
     {
       path: '/disclaimer/',
       kind: 'governance',
       indexable: true,
       lastModified: GOVERNANCE_CONTENT_DATES['/disclaimer/'],
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
     {
       path: '/editorial-policy/',
       kind: 'governance',
       indexable: true,
       lastModified: GOVERNANCE_CONTENT_DATES['/editorial-policy/'],
+      changeFrequency: 'yearly',
+      priority: 0.5,
     },
   ];
 
@@ -165,6 +194,8 @@ function buildCategoryRoutes(): CanonicalRouteEntry[] {
       kind: 'category' as const,
       indexable: true,
       ...(lastModified ? { lastModified } : {}),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     };
   });
 }
@@ -173,6 +204,7 @@ function buildCalculatorRoutes(): CanonicalRouteEntry[] {
   return ALL_CALCULATORS.map((calc) => {
     const normalizedPath = normalizeTrailingSlash(`/${calc.slug}/`);
     const lastModified = isValidW3cDate(calc.lastUpdated) ? calc.lastUpdated : undefined;
+    const isMainCalculator = Boolean(calc.isPopular || calc.isFeatured);
 
     return {
       path: normalizedPath,
@@ -180,6 +212,8 @@ function buildCalculatorRoutes(): CanonicalRouteEntry[] {
       kind: 'calculator' as const,
       indexable: true,
       ...(lastModified ? { lastModified } : {}),
+      changeFrequency: isMainCalculator ? ('weekly' as const) : ('monthly' as const),
+      priority: isMainCalculator ? 0.9 : 0.8,
     };
   });
 }
@@ -195,6 +229,8 @@ function buildBlogArticleRoutes(): CanonicalRouteEntry[] {
       kind: 'blog-article' as const,
       indexable: true,
       ...(lastModified ? { lastModified } : {}),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     };
   });
 }

@@ -329,6 +329,15 @@ for (const entry of sitemapEntries) {
       entry.lastModified instanceof Date ? entry.lastModified.toISOString() : String(entry.lastModified);
     assert.ok(isValidW3cDate(lastModStr), `Invalid W3C lastModified date on ${entry.url}: ${lastModStr}`);
   }
+
+  assert.ok(
+    ['daily', 'weekly', 'monthly', 'yearly'].includes(String(entry.changeFrequency)),
+    `Unexpected changeFrequency on ${entry.url}: ${entry.changeFrequency}`
+  );
+  assert.ok(
+    typeof entry.priority === 'number' && entry.priority >= 0 && entry.priority <= 1,
+    `Invalid priority on ${entry.url}: ${entry.priority}`
+  );
 }
 
 assert.ok(!seenUrls.has(`${SITE_CONFIG.domain}/not-found/`), 'Error page must not be included in sitemap');
