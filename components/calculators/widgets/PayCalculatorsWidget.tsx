@@ -7,7 +7,6 @@ import {
 } from '@/lib/tax-years/2026-2027/salaryData';
 import { calculateFullNhsPay2026_2027 } from '@/lib/calculations/fullPay';
 import { calculateBasicHourlyRate } from '@/lib/calculations/shiftsAndOvertime';
-import { calculateAnnualLeaveEntitlement } from '@/lib/calculations/employment';
 import { formatGBP, formatPercent, roundMoney } from '@/lib/formatting/currency';
 import { validatePositiveNumber } from '@/lib/validation/inputs';
 import type {
@@ -36,9 +35,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
   const [useCustomSalary, setUseCustomSalary] = useState<boolean>(false);
   const [customSalaryStr, setCustomSalaryStr] = useState<string>('32073');
   const [hcasZone, setHcasZone] = useState<HcasZone>('none');
-  const [weeklyHoursStr, setWeeklyHoursStr] = useState<string>(
-    slug === 'nhs-part-time-pay-calculator' ? '22.5' : '37.5'
-  );
+  const [weeklyHoursStr, setWeeklyHoursStr] = useState<string>('37.5');
   const [pensionOptIn, setPensionOptIn] = useState<boolean>(true);
   const [studentLoanPlan, setStudentLoanPlan] = useState<StudentLoanPlan>('none');
   const [hasPostgrad, setHasPostgrad] = useState<boolean>(false);
@@ -49,8 +46,6 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
   const [payRisePctStr, setPayRisePctStr] = useState<string>('5');
   const [targetBandId, setTargetBandId] = useState<AfcBandId>('band-6');
   const [targetStepIndex, setTargetStepIndex] = useState<number>(0);
-  const [includeBankWtr, setIncludeBankWtr] = useState<boolean>(false);
-  const [serviceYearsStr, setServiceYearsStr] = useState<string>('5');
 
   const scales = getAfcScalesForJurisdiction(jurisdiction);
   const activeBand = scales.find((b) => b.bandId === bandId) ?? scales[3];
@@ -63,19 +58,13 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
   const unsocialVal = validatePositiveNumber(unsocialMonthlyStr, 'Monthly unsocial pay', 0, 10000);
   const sacrificeVal = validatePositiveNumber(sacrificeMonthlyStr, 'Monthly salary sacrifice', 0, 5000);
   const riseVal = validatePositiveNumber(payRisePctStr, 'Pay rise %', 0, 100);
-  const serviceVal = validatePositiveNumber(serviceYearsStr, 'Years of NHS service', 0, 50);
 
   const fullTimeBasicSalary = useCustomSalary ? salaryVal.value : bandSalary;
-  const contractedHours =
-    slug === 'nhs-part-time-pay-calculator' || slug === 'nhs-pay-calculator' || slug === 'nhs-take-home-pay-calculator'
-      ? hoursVal.value
-      : standardHours;
+  const contractedHours = slug === 'nhs-pay-calculator' ? hoursVal.value : standardHours;
 
   const handleJurisdictionChange = (next: UkJurisdiction) => {
     setJurisdiction(next);
-    if (slug !== 'nhs-part-time-pay-calculator') {
-      setWeeklyHoursStr(String(getStandardWeeklyHours(next)));
-    }
+    setWeeklyHoursStr(String(getStandardWeeklyHours(next)));
     if (next !== 'england' && hcasZone !== 'none') {
       setHcasZone('none');
     }
@@ -88,7 +77,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     setUseCustomSalary(false);
     setCustomSalaryStr('32073');
     setHcasZone('none');
-    setWeeklyHoursStr(slug === 'nhs-part-time-pay-calculator' ? '22.5' : '37.5');
+    setWeeklyHoursStr('37.5');
     setPensionOptIn(true);
     setStudentLoanPlan('none');
     setHasPostgrad(false);
@@ -99,8 +88,6 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     setPayRisePctStr('5');
     setTargetBandId('band-6');
     setTargetStepIndex(0);
-    setIncludeBankWtr(false);
-    setServiceYearsStr('5');
   };
 
   const payResult = calculateFullNhsPay2026_2027({
@@ -108,12 +95,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     jurisdiction,
     contractedWeeklyHours: contractedHours,
     hcasZone,
-    additionalUnsocialAnnualPay: slug === 'nhs-take-home-pay-calculator' ? unsocialVal.value * 12 : 0,
-    salarySacrificeAnnual: slug === 'nhs-take-home-pay-calculator' ? sacrificeVal.value * 12 : 0,
+    additionalUnsocialAnnualPay: slug === 'nhs-pay-calculator' ? unsocialVal.value * 12 : 0,
+    salarySacrificeAnnual: slug === 'nhs-pay-calculator' ? sacrificeVal.value * 12 : 0,
     pensionOptIn,
     studentLoanPlan,
     hasPostgraduateLoan: hasPostgrad,
-    taxCode: slug === 'nhs-take-home-pay-calculator' || slug === 'nhs-salary-after-tax-calculator' ? taxCode : '1257L',
+    taxCode: slug === 'nhs-pay-calculator' ? taxCode : '1257L',
   });
 
   // Specialized view: Band Comparison Calculator
@@ -224,99 +211,6 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     );
   }
 
-  // Specialized view: Hourly Pay Calculator
-  if (slug === 'nhs-hourly-pay-calculator') {
-    const basicHourly = calculateBasicHourlyRate(fullTimeBasicSalary, jurisdiction);
-    const nightSatMult = bandId === 'band-2' ? 1.41 : bandId === 'band-3' ? 1.35 : 1.3;
-    const sunBhMult = bandId === 'band-2' ? 1.83 : bandId === 'band-3' ? 1.69 : 1.6;
-    const wtrFactor = includeBankWtr ? 1.1207 : 1;
-
-    return (
-      <CalculatorCardLayout title="NHS Hourly & Shift Rate Calculator (2026/2027)" onReset={handleReset} results={
-        <>
-          <KpiGrid
-            items={[
-              {
-                label: includeBankWtr ? 'Basic Hourly + 12.07% Bank WTR' : 'Basic Hourly Rate',
-                value: formatGBP(roundMoney(basicHourly * wtrFactor)),
-                sublabel: `Based on ${standardHours}h standard week`,
-                highlight: true,
-              },
-              {
-                label: 'Overtime Rate (1.5x)',
-                value: formatGBP(roundMoney(basicHourly * 1.5)),
-                sublabel: `Public Holiday 2.0x: ${formatGBP(roundMoney(basicHourly * 2))}/hr`,
-              },
-            ]}
-          />
-          <BreakdownTable
-            title="Hourly Rate Schedule by Shift Type"
-            rows={[
-              { label: 'Standard Daytime Basic Rate', value: `${formatGBP(basicHourly)} / hr` },
-              {
-                label: `Weeknight (8pm–6am) & Saturday (+${Math.round((nightSatMult - 1) * 100)}%)`,
-                value: `${formatGBP(roundMoney(basicHourly * nightSatMult))} / hr`,
-              },
-              {
-                label: `Sunday & Bank Holiday (+${Math.round((sunBhMult - 1) * 100)}%)`,
-                value: `${formatGBP(roundMoney(basicHourly * sunBhMult))} / hr`,
-              },
-              { label: 'Section 3 Overtime (1.5x)', value: `${formatGBP(roundMoney(basicHourly * 1.5))} / hr` },
-              { label: 'Public Holiday Overtime (2.0x)', value: `${formatGBP(roundMoney(basicHourly * 2.0))} / hr` },
-              ...(includeBankWtr
-                ? [
-                    {
-                      label: 'Bank WTR Rolled-Up Holiday Addition (+12.07% on Basic)',
-                      value: `+${formatGBP(roundMoney(basicHourly * 0.1207))} / hr`,
-                      tone: 'positive' as const,
-                    },
-                  ]
-                : []),
-            ]}
-          />
-        </>
-      }>
-        <JurisdictionSelect value={jurisdiction} onChange={handleJurisdictionChange} />
-        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
-          <input
-            type="checkbox"
-            checked={useCustomSalary}
-            onChange={(e) => setUseCustomSalary(e.target.checked)}
-            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
-          />
-          <span>Enter custom annual salary instead of AfC Band</span>
-        </label>
-        {useCustomSalary ? (
-          <NumberField
-            id="custom-salary-hourly"
-            label="Full-Time Annual Basic Salary"
-            prefix="£"
-            value={customSalaryStr}
-            onChange={setCustomSalaryStr}
-            error={salaryVal.error}
-          />
-        ) : (
-          <BandAndStepSelect
-            jurisdiction={jurisdiction}
-            bandId={bandId}
-            stepIndex={safeStepIdx}
-            onBandChange={(b) => { setBandId(b); setStepIndex(0); }}
-            onStepChange={setStepIndex}
-          />
-        )}
-        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
-          <input
-            type="checkbox"
-            checked={includeBankWtr}
-            onChange={(e) => setIncludeBankWtr(e.target.checked)}
-            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
-          />
-          <span>Include 12.07% NHS Bank WTR rolled-up holiday pay</span>
-        </label>
-      </CalculatorCardLayout>
-    );
-  }
-
   // Specialized view: Gross Salary Converter + Uplift Comparison
   if (slug === 'nhs-salary-calculator') {
     const baseGross = roundMoney(fullTimeBasicSalary + payResult.hcasAllowance);
@@ -397,102 +291,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     );
   }
 
-  // Specialized view: Part-Time Pro-Rata Calculator
-  if (slug === 'nhs-part-time-pay-calculator') {
-    const fte = Math.min(1, hoursVal.value / standardHours);
-    const ftReference = calculateFullNhsPay2026_2027({
-      fullTimeBasicSalary,
-      jurisdiction,
-      contractedWeeklyHours: standardHours,
-      hcasZone,
-      pensionOptIn,
-      studentLoanPlan,
-      hasPostgraduateLoan: hasPostgrad,
-    });
-    const leaveRes = calculateAnnualLeaveEntitlement(serviceVal.value, hoursVal.value, jurisdiction);
-
-    return (
-      <CalculatorCardLayout title="NHS Part-Time Pro-Rata WTE Calculator (2026/2027)" onReset={handleReset} results={
-        <>
-          <KpiGrid
-            items={[
-              {
-                label: `Pro-Rata Monthly Net Pay (${(fte * 100).toFixed(1)}% WTE)`,
-                value: formatGBP(payResult.netPayMonthly),
-                sublabel: `Actual Gross: ${formatGBP(payResult.totalGrossPay)}/yr`,
-                highlight: true,
-              },
-              {
-                label: 'Part-Time Pension Tier (Actual Pay)',
-                value: pensionOptIn ? formatPercent(payResult.pensionRate, 1) : 'Opted Out',
-                sublabel: pensionOptIn
-                  ? `Full-time tier would be ${formatPercent(ftReference.pensionRate, 1)}`
-                  : 'No pension deducted',
-              },
-            ]}
-          />
-          <BreakdownTable
-            title="Part-Time Salary & Leave Breakdown"
-            rows={[
-              { label: 'Full-Time Equivalent (1.0 WTE) Salary', value: formatGBP(fullTimeBasicSalary) },
-              { label: `Actual Pro-Rata Gross Pay (${hoursVal.value}h / ${standardHours}h)`, value: formatGBP(payResult.totalGrossPay) },
-              { label: 'NHS Pension Contribution', value: `-${formatGBP(payResult.pensionContribution)}`, tone: 'deduction' },
-              { label: 'Income Tax', value: `-${formatGBP(payResult.incomeTax)}`, tone: 'deduction' },
-              { label: 'National Insurance', value: `-${formatGBP(payResult.nationalInsurance)}`, tone: 'deduction' },
-              { label: 'Pro-Rata Annual Leave + Bank Holidays', value: `${leaveRes.proRataTotalHours} hrs (${leaveRes.proRataTotalDays} days)`, tone: 'positive' },
-              { label: 'Annual Net Take-Home Pay', value: formatGBP(payResult.netPayAnnual), tone: 'total' },
-            ]}
-          />
-          <WarningList warnings={payResult.warnings} />
-        </>
-      }>
-        <JurisdictionSelect value={jurisdiction} onChange={handleJurisdictionChange} />
-        <BandAndStepSelect
-          jurisdiction={jurisdiction}
-          bandId={bandId}
-          stepIndex={safeStepIdx}
-          onBandChange={(b) => { setBandId(b); setStepIndex(0); }}
-          onStepChange={setStepIndex}
-        />
-        <NumberField
-          id="part-time-hours"
-          label={`Contracted Weekly Hours (Full-Time = ${standardHours}h)`}
-          suffix="hrs/wk"
-          value={weeklyHoursStr}
-          onChange={setWeeklyHoursStr}
-          min={1}
-          max={standardHours}
-          error={hoursVal.error}
-        />
-        <NumberField
-          id="part-time-service"
-          label="Continuous NHS Service (for Leave)"
-          suffix="years"
-          value={serviceYearsStr}
-          onChange={setServiceYearsStr}
-          error={serviceVal.error}
-        />
-        <HcasSelect value={hcasZone} onChange={setHcasZone} />
-        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
-          <input
-            type="checkbox"
-            checked={pensionOptIn}
-            onChange={(e) => setPensionOptIn(e.target.checked)}
-            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
-          />
-          <span>Member of NHS Pension Scheme</span>
-        </label>
-        <StudentLoanSelect
-          plan={studentLoanPlan}
-          onPlanChange={setStudentLoanPlan}
-          hasPostgrad={hasPostgrad}
-          onPostgradChange={setHasPostgrad}
-        />
-      </CalculatorCardLayout>
-    );
-  }
-
-  // Default & Specialized Pay Calculators: nhs-pay-calculator, nhs-take-home-pay-calculator, nhs-salary-after-tax-calculator
+  // Default Pay & Take-Home Calculator: nhs-pay-calculator
   const primaryNet =
     payFrequency === 'four-weekly'
       ? payResult.netPayFourWeekly
@@ -516,13 +315,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
 
   return (
     <CalculatorCardLayout
-      title={
-        slug === 'nhs-take-home-pay-calculator'
-          ? 'NHS Net Payslip Estimator (2026/2027)'
-          : slug === 'nhs-salary-after-tax-calculator'
-            ? 'NHS Salary After Tax Waterfall (2026/2027)'
-            : 'NHS Pay & Take-Home Estimator (2026/2027)'
-      }
+      title="NHS Pay & Take-Home Estimator (2026/2027)"
       onReset={handleReset}
       results={
         <>
@@ -535,18 +328,9 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
                 highlight: true,
               },
               {
-                label:
-                  slug === 'nhs-salary-after-tax-calculator'
-                    ? 'Effective & Marginal Tax Rate'
-                    : 'Total Gross Annual Pay',
-                value:
-                  slug === 'nhs-salary-after-tax-calculator'
-                    ? `${formatPercent(payResult.effectiveTaxRate, 1)} eff · ${formatPercent(payResult.marginalTaxRate, 0)} marg`
-                    : formatGBP(payResult.totalGrossPay),
-                sublabel:
-                  slug === 'nhs-salary-after-tax-calculator'
-                    ? `Personal Allowance: ${formatGBP(payResult.personalAllowance)}`
-                    : `Effective Net Hourly: ${formatGBP(payResult.effectiveHourlyRate)}/hr`,
+                label: 'Total Gross Annual Pay',
+                value: formatGBP(payResult.totalGrossPay),
+                sublabel: `Effective Net Hourly: ${formatGBP(payResult.effectiveHourlyRate)}/hr`,
               },
             ]}
           />
@@ -646,72 +430,66 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
 
       <HcasSelect value={hcasZone} onChange={setHcasZone} />
 
-      {slug !== 'nhs-salary-after-tax-calculator' && (
-        <NumberField
-          id="contracted-hours-main"
-          label={`Contracted Weekly Hours (Full-Time = ${standardHours}h)`}
-          suffix="hrs/wk"
-          value={weeklyHoursStr}
-          onChange={setWeeklyHoursStr}
-          min={1}
-          max={60}
-          error={hoursVal.error}
-        />
-      )}
+      <NumberField
+        id="contracted-hours-main"
+        label={`Contracted Weekly Hours (Full-Time = ${standardHours}h)`}
+        suffix="hrs/wk"
+        value={weeklyHoursStr}
+        onChange={setWeeklyHoursStr}
+        min={1}
+        max={60}
+        error={hoursVal.error}
+      />
 
-      {slug === 'nhs-take-home-pay-calculator' && (
-        <>
-          <NumberField
-            id="unsocial-monthly"
-            label="Estimated Monthly Unsocial Hours Pay"
-            prefix="£"
-            suffix="/ mo"
-            value={unsocialMonthlyStr}
-            onChange={setUnsocialMonthlyStr}
-            error={unsocialVal.error}
+      <NumberField
+        id="unsocial-monthly"
+        label="Estimated Monthly Unsocial Hours Pay"
+        prefix="£"
+        suffix="/ mo"
+        value={unsocialMonthlyStr}
+        onChange={setUnsocialMonthlyStr}
+        error={unsocialVal.error}
+      />
+      <NumberField
+        id="sacrifice-monthly"
+        label="Monthly Salary Sacrifice (Fleet Car / Cycle)"
+        prefix="£"
+        suffix="/ mo"
+        value={sacrificeMonthlyStr}
+        onChange={setSacrificeMonthlyStr}
+        error={sacrificeVal.error}
+      />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div>
+          <label htmlFor="tax-code-input" className="block text-xs font-semibold text-[#2F3432]">
+            HMRC Tax Code
+          </label>
+          <input
+            id="tax-code-input"
+            type="text"
+            value={taxCode}
+            onChange={(e) => setTaxCode(e.target.value)}
+            placeholder="1257L"
+            className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 font-mono text-base uppercase text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
           />
-          <NumberField
-            id="sacrifice-monthly"
-            label="Monthly Salary Sacrifice (Fleet Car / Cycle)"
-            prefix="£"
-            suffix="/ mo"
-            value={sacrificeMonthlyStr}
-            onChange={setSacrificeMonthlyStr}
-            error={sacrificeVal.error}
-          />
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div>
-              <label htmlFor="tax-code-input" className="block text-xs font-semibold text-[#2F3432]">
-                HMRC Tax Code
-              </label>
-              <input
-                id="tax-code-input"
-                type="text"
-                value={taxCode}
-                onChange={(e) => setTaxCode(e.target.value)}
-                placeholder="1257L"
-                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 font-mono text-base uppercase text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
-              />
-            </div>
-            <div>
-              <label htmlFor="pay-frequency-select" className="block text-xs font-semibold text-[#2F3432]">
-                Pay Frequency
-              </label>
-              <select
-                id="pay-frequency-select"
-                value={payFrequency}
-                onChange={(e) => setPayFrequency(e.target.value as PayFrequency)}
-                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
-              >
-                <option value="monthly">Monthly (12/yr)</option>
-                <option value="four-weekly">Four-Weekly (13/yr)</option>
-                <option value="weekly">Weekly (52/yr)</option>
-                <option value="annual">Annual</option>
-              </select>
-            </div>
-          </div>
-        </>
-      )}
+        </div>
+        <div>
+          <label htmlFor="pay-frequency-select" className="block text-xs font-semibold text-[#2F3432]">
+            Pay Frequency
+          </label>
+          <select
+            id="pay-frequency-select"
+            value={payFrequency}
+            onChange={(e) => setPayFrequency(e.target.value as PayFrequency)}
+            className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
+          >
+            <option value="monthly">Monthly (12/yr)</option>
+            <option value="four-weekly">Four-Weekly (13/yr)</option>
+            <option value="weekly">Weekly (52/yr)</option>
+            <option value="annual">Annual</option>
+          </select>
+        </div>
+      </div>
 
       <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
         <input

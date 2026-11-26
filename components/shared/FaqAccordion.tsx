@@ -21,11 +21,13 @@ export function FaqAccordion({
       <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
         {faqs.map((faq, idx) => {
           const isOpen = openIndex === idx;
+          const panelId = `faq-panel-${idx}`;
           return (
             <div key={faq.question}>
               <button
                 type="button"
                 aria-expanded={isOpen}
+                aria-controls={panelId}
                 onClick={() => setOpenIndex(isOpen ? null : idx)}
                 className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-sm font-semibold text-[#2F3432] transition-colors hover:bg-slate-50 sm:text-base"
               >
@@ -37,11 +39,16 @@ export function FaqAccordion({
                   aria-hidden="true"
                 />
               </button>
-              {isOpen && (
-                <div className="px-5 pb-4 text-sm leading-relaxed text-slate-600">
-                  {faq.answer}
-                </div>
-              )}
+              <div
+                id={panelId}
+                className={
+                  isOpen
+                    ? 'px-5 pb-4 text-sm leading-relaxed text-slate-600'
+                    : 'hidden px-5 pb-4 text-sm leading-relaxed text-slate-600'
+                }
+              >
+                {faq.answer}
+              </div>
             </div>
           );
         })}

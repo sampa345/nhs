@@ -21,11 +21,11 @@ export const FOOTER_COLUMNS = [
     heading: 'NHS Pay & Tax',
     links: [
       { label: 'NHS Pay Calculator', href: '/nhs-pay-calculator/' },
-      { label: 'NHS Take Home Pay', href: '/nhs-take-home-pay-calculator/' },
       { label: 'NHS Band Calculator', href: '/nhs-band-calculator/' },
-      { label: 'NHS Hourly Pay', href: '/nhs-hourly-pay-calculator/' },
+      { label: 'NHS Salary Calculator', href: '/nhs-salary-calculator/' },
       { label: 'NHS Tax Calculator', href: '/nhs-tax-calculator/' },
       { label: 'National Insurance', href: '/nhs-national-insurance-calculator/' },
+      { label: 'Salary Sacrifice', href: '/nhs-salary-sacrifice-calculator/' },
     ],
   },
   {
@@ -34,9 +34,9 @@ export const FOOTER_COLUMNS = [
       { label: 'NHS Pension Calculator', href: '/nhs-pension-calculator/' },
       { label: 'Pension Contributions', href: '/nhs-pension-contribution-calculator/' },
       { label: 'NHS Overtime Calculator', href: '/nhs-overtime-calculator/' },
-      { label: 'Night Shift Pay', href: '/nhs-night-shift-pay-calculator/' },
       { label: 'Unsocial Hours Pay', href: '/nhs-unsocial-hours-calculator/' },
       { label: 'Bank Holiday Pay', href: '/nhs-bank-holiday-pay-calculator/' },
+      { label: 'Student Loan Calculator', href: '/nhs-student-loan-calculator/' },
     ],
   },
   {

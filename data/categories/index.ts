@@ -36,7 +36,7 @@ export const CATEGORIES: CategoryDefinition[] = [
       {
         question: 'Do these calculators work for NHS doctors and dentists?',
         answer:
-          'While pay band selectors are built for Agenda for Change staff, our NHS Pay, Take Home Pay, Salary, and Salary After Tax calculators include a custom salary option so medical and dental staff can model their exact gross pay.',
+          'While pay band selectors are built for Agenda for Change staff, our NHS Pay and NHS Salary calculators include a custom salary option so medical and dental staff can model their exact gross and take-home pay.',
       },
     ],
     relatedCategories: ['nhs-pension-calculators', 'nhs-shift-calculators', 'nhs-tax-calculators'],

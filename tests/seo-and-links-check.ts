@@ -10,23 +10,14 @@ import { CANONICAL_ROUTE_PATHS, getSitemapRouteEntries, isValidW3cDate } from '.
 
 const EXPECTED_CALCULATOR_SLUGS = [
   'nhs-pay-calculator',
-  'nhs-take-home-pay-calculator',
   'nhs-salary-calculator',
-  'nhs-salary-after-tax-calculator',
   'nhs-band-calculator',
-  'nhs-hourly-pay-calculator',
-  'nhs-part-time-pay-calculator',
   'nhs-pension-calculator',
   'nhs-pension-contribution-calculator',
-  'nhs-pension-tax-relief-calculator',
-  'nhs-pension-take-home-pay-calculator',
   'nhs-overtime-calculator',
-  'nhs-night-shift-pay-calculator',
-  'nhs-weekend-pay-calculator',
   'nhs-unsocial-hours-calculator',
   'nhs-bank-holiday-pay-calculator',
   'nhs-annual-leave-calculator',
-  'nhs-holiday-entitlement-calculator',
   'nhs-sick-pay-calculator',
   'nhs-maternity-pay-calculator',
   'nhs-paternity-pay-calculator',
@@ -37,7 +28,7 @@ const EXPECTED_CALCULATOR_SLUGS = [
   'nhs-student-loan-calculator',
 ];
 
-assert.equal(ALL_CALCULATORS.length, 26, 'Expected 26 calculators');
+assert.equal(ALL_CALCULATORS.length, 17, 'Expected 17 calculators');
 for (const slug of EXPECTED_CALCULATOR_SLUGS) {
   assert.ok(ALL_CALCULATORS.some((c) => c.slug === slug), `Missing calculator data: ${slug}`);
   assert.ok(
@@ -64,6 +55,26 @@ for (const link of [
 }
 
 for (const calc of ALL_CALCULATORS) {
+  assert.ok(
+    calc.metaTitle.length >= 30 && calc.metaTitle.length <= 60,
+    `Calculator ${calc.slug} metaTitle length must be 30–60 chars (got ${calc.metaTitle.length}: "${calc.metaTitle}")`
+  );
+  assert.ok(
+    calc.metaDescription.length >= 120 && calc.metaDescription.length <= 160,
+    `Calculator ${calc.slug} metaDescription length must be 120–160 chars (got ${calc.metaDescription.length})`
+  );
+  assert.ok(
+    calc.faqs.length >= 3,
+    `Calculator ${calc.slug} must have at least 3 FAQs (got ${calc.faqs.length})`
+  );
+  assert.ok(
+    calc.howItWorks.length >= 2,
+    `Calculator ${calc.slug} must have at least 2 howItWorks paragraphs (got ${calc.howItWorks.length})`
+  );
+  assert.ok(
+    calc.referenceTable && calc.referenceTable.rows.length >= 2,
+    `Calculator ${calc.slug} must include a 2026/27 referenceTable`
+  );
   for (const rel of calc.relatedCalculators) {
     assert.ok(validPaths.has(`/${rel}/`), `Broken related calculator link on ${calc.slug}: ${rel}`);
   }
@@ -299,8 +310,8 @@ assert.equal(SITE_CONFIG.domain, 'https://nhsstaffcalculator.co.uk', 'SITE_CONFI
 const routeEntries = getSitemapRouteEntries();
 const sitemapEntries = sitemap();
 
-assert.equal(routeEntries.length, 43, `Expected 43 canonical routes, got ${routeEntries.length}`);
-assert.equal(sitemapEntries.length, 43, `Expected 43 sitemap URLs, got ${sitemapEntries.length}`);
+assert.equal(routeEntries.length, 34, `Expected 34 canonical routes, got ${routeEntries.length}`);
+assert.equal(sitemapEntries.length, 34, `Expected 34 sitemap URLs, got ${sitemapEntries.length}`);
 
 const seenUrls = new Set<string>();
 for (const entry of sitemapEntries) {
@@ -341,6 +352,22 @@ for (const entry of sitemapEntries) {
 }
 
 assert.ok(!seenUrls.has(`${SITE_CONFIG.domain}/not-found/`), 'Error page must not be included in sitemap');
+for (const removedSlug of [
+  'nhs-salary-after-tax-calculator',
+  'nhs-hourly-pay-calculator',
+  'nhs-take-home-pay-calculator',
+  'nhs-part-time-pay-calculator',
+  'nhs-pension-tax-relief-calculator',
+  'nhs-pension-take-home-pay-calculator',
+  'nhs-night-shift-pay-calculator',
+  'nhs-weekend-pay-calculator',
+  'nhs-holiday-entitlement-calculator',
+]) {
+  assert.ok(
+    !seenUrls.has(`${SITE_CONFIG.domain}/${removedSlug}/`),
+    `Removed calculator must not be included in sitemap: ${removedSlug}`
+  );
+}
 
 console.log(
   `SEO, Internal Link, Sitemap & JSON-LD Schema Integrity Passed: ${validPaths.size} canonical routes verified.`

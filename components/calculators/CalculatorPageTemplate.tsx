@@ -86,7 +86,19 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
       </header>
 
       {/* Calculator interface prominently at top */}
-      <section aria-label="Interactive calculator" className="mt-6">
+      <section aria-label={calc.calculatorSectionHeading ?? 'Interactive calculator'} className="mt-6">
+        {calc.calculatorSectionHeading && (
+          <div className="mb-4 max-w-3xl">
+            <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
+              {calc.calculatorSectionHeading}
+            </h2>
+            {calc.calculatorSectionDescription && (
+              <p className="mt-1.5 text-sm leading-relaxed text-slate-600 sm:text-base">
+                {calc.calculatorSectionDescription}
+              </p>
+            )}
+          </div>
+        )}
         <CalculatorWidgetDispatcher slug={calc.slug} category={calc.category} />
       </section>
 
@@ -102,7 +114,7 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
         <div className="min-w-0 space-y-10 lg:col-span-8">
           <section className="space-y-3">
             <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
-              How to Use This Calculator
+              {calc.howToUseHeading ?? 'How to Use This Calculator'}
             </h2>
             <ol className="space-y-2.5 text-sm leading-relaxed text-slate-700 sm:text-base">
               {calc.howToUse.map((step, i) => (
@@ -116,9 +128,166 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
             </ol>
           </section>
 
-          <section className="space-y-3">
+          {calc.referenceTableHeading && calc.referenceTable && (
+            <section className="space-y-4">
+              <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
+                {calc.referenceTableHeading}
+              </h2>
+              {calc.referenceTableIntro?.map((p) => (
+                <p key={p} className="text-sm leading-relaxed text-slate-700 sm:text-base">
+                  {p}
+                </p>
+              ))}
+              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <div className="border-b border-slate-200 bg-slate-50 px-3.5 py-3 text-xs font-semibold text-slate-600 sm:px-4">
+                  {calc.referenceTable.caption}
+                </div>
+                <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={calc.referenceTable.caption}>
+                  <table className="w-full text-left text-xs sm:text-sm">
+                    <caption className="sr-only">{calc.referenceTable.caption}</caption>
+                    <thead className="border-b border-slate-200 bg-white text-slate-600">
+                      <tr>
+                        {calc.referenceTable.headers.map((h) => (
+                          <th key={h} scope="col" className="px-3.5 py-2.5 font-semibold whitespace-nowrap sm:px-4 sm:py-3">
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {calc.referenceTable.rows.map((row) => (
+                        <tr key={row.join('-')}>
+                          {row.map((cell, cIdx) => (
+                            <td
+                              key={`${cell}-${cIdx}`}
+                              className={`px-3.5 py-2.5 whitespace-nowrap sm:px-4 sm:py-3 ${
+                                cIdx === 0
+                                  ? 'font-semibold text-[#2F3432]'
+                                  : 'font-mono tabular-nums text-slate-700'
+                              }`}
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              {calc.referenceTableLink && (
+                <p className="text-sm leading-relaxed text-slate-700 sm:text-base">
+                  <Link href={calc.referenceTableLink.href} className="inline-flex items-center gap-1.5 font-semibold text-[#0074BA] hover:underline">
+                    <span>{calc.referenceTableLink.label}</span>
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </p>
+              )}
+            </section>
+          )}
+
+          {calc.takeHomeSectionHeading ? (
+            <section className="space-y-4">
+              <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
+                {calc.takeHomeSectionHeading}
+              </h2>
+              {calc.takeHomeParagraphs?.map((p) => (
+                <p key={p} className="text-sm leading-relaxed text-slate-700 sm:text-base">
+                  {p}
+                </p>
+              ))}
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+                <h3 className="font-display text-lg font-bold text-[#2F3432]">
+                  Example Calculation: {calc.example.scenarioTitle}
+                </h3>
+                <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      Inputs Used
+                    </h4>
+                    <ul className="mt-2 space-y-1.5 text-sm text-slate-700">
+                      {calc.example.inputsSummary.map((inp) => (
+                        <li key={inp}>• {inp}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                      Estimated Output
+                    </h4>
+                    <dl className="mt-2 space-y-2 text-sm">
+                      {calc.example.outputsSummary.map((out) => (
+                        <div key={out.label} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                          <dt className="text-slate-600">{out.label}</dt>
+                          <dd className="text-right font-mono font-semibold tabular-nums text-[#2F3432]">
+                            {out.value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                </div>
+                <p className="mt-4 border-t border-slate-100 pt-3 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                  {calc.example.explanation}
+                </p>
+              </div>
+            </section>
+          ) : (
+            <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+              <h2 className="font-display text-xl font-bold text-[#2F3432]">
+                Example Calculation: {calc.example.scenarioTitle}
+              </h2>
+              <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div>
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    Inputs Used
+                  </h3>
+                  <ul className="mt-2 space-y-1.5 text-sm text-slate-700">
+                    {calc.example.inputsSummary.map((inp) => (
+                      <li key={inp}>• {inp}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    Estimated Output
+                  </h3>
+                  <dl className="mt-2 space-y-2 text-sm">
+                    {calc.example.outputsSummary.map((out) => (
+                      <div key={out.label} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                        <dt className="text-slate-600">{out.label}</dt>
+                        <dd className="text-right font-mono font-semibold tabular-nums text-[#2F3432]">
+                          {out.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </div>
+              <p className="mt-4 border-t border-slate-100 pt-3 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                {calc.example.explanation}
+              </p>
+            </section>
+          )}
+
+          {calc.payRiseSection && (
+            <section className="space-y-4">
+              <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
+                {calc.payRiseSection.heading}
+              </h2>
+              {calc.payRiseSection.paragraphs.map((p) => (
+                <p key={p} className="text-sm leading-relaxed text-slate-700 sm:text-base">
+                  {p}
+                </p>
+              ))}
+            </section>
+          )}
+
+          <AdSlot placement="between-sections" />
+
+          <section className="space-y-4">
             <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
-              How the Calculation Works
+              {calc.howItWorksHeading ?? 'How the Calculation Works'}
             </h2>
             {calc.howItWorks.map((p) => (
               <p key={p} className="text-sm leading-relaxed text-slate-700 sm:text-base">
@@ -128,46 +297,46 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
             <p className="text-sm leading-relaxed text-slate-700 sm:text-base">
               {calc.payrollContext}
             </p>
-          </section>
-
-          {/* Example calculation */}
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-            <h2 className="font-display text-xl font-bold text-[#2F3432]">
-              Example Calculation: {calc.example.scenarioTitle}
-            </h2>
-            <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Inputs Used
-                </h3>
-                <ul className="mt-2 space-y-1.5 text-sm text-slate-700">
-                  {calc.example.inputsSummary.map((inp) => (
-                    <li key={inp}>• {inp}</li>
-                  ))}
-                </ul>
+            {!calc.referenceTableHeading && calc.referenceTable && (
+              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <div className="border-b border-slate-200 bg-slate-50 px-3.5 py-3 text-xs font-semibold text-slate-600 sm:px-4">
+                  {calc.referenceTable.caption}
+                </div>
+                <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={calc.referenceTable.caption}>
+                  <table className="w-full text-left text-xs sm:text-sm">
+                    <caption className="sr-only">{calc.referenceTable.caption}</caption>
+                    <thead className="border-b border-slate-200 bg-white text-slate-600">
+                      <tr>
+                        {calc.referenceTable.headers.map((h) => (
+                          <th key={h} scope="col" className="px-3.5 py-2.5 font-semibold whitespace-nowrap sm:px-4 sm:py-3">
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {calc.referenceTable.rows.map((row) => (
+                        <tr key={row.join('-')}>
+                          {row.map((cell, cIdx) => (
+                            <td
+                              key={`${cell}-${cIdx}`}
+                              className={`px-3.5 py-2.5 whitespace-nowrap sm:px-4 sm:py-3 ${
+                                cIdx === 0
+                                  ? 'font-semibold text-[#2F3432]'
+                                  : 'font-mono tabular-nums text-slate-700'
+                              }`}
+                            >
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Estimated Output
-                </h3>
-                <dl className="mt-2 space-y-2 text-sm">
-                  {calc.example.outputsSummary.map((out) => (
-                    <div key={out.label} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-                      <dt className="text-slate-600">{out.label}</dt>
-                      <dd className="text-right font-mono font-semibold tabular-nums text-[#2F3432]">
-                        {out.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </div>
-            <p className="mt-4 border-t border-slate-100 pt-3 text-xs leading-relaxed text-slate-600 sm:text-sm">
-              {calc.example.explanation}
-            </p>
+            )}
           </section>
-
-          <AdSlot placement="between-sections" />
 
           <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div className="rounded-xl border border-slate-200 bg-white p-5">
@@ -192,7 +361,7 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
             </div>
           </section>
 
-          <FaqAccordion faqs={calc.faqs} />
+          <FaqAccordion faqs={calc.faqs} heading={calc.faqHeading} />
         </div>
 
         {/* Sidebar: Related Calculators, Guides & Official Sources */}

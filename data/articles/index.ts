@@ -73,7 +73,7 @@ export const BLOG_ARTICLES: BlogArticle[] = [
         'Total gross pensionable salary before unsocial hours: £38,487.60',
       ],
     },
-    relatedCalculators: ['nhs-band-calculator', 'nhs-pay-calculator', 'nhs-take-home-pay-calculator'],
+    relatedCalculators: ['nhs-band-calculator', 'nhs-pay-calculator', 'nhs-salary-calculator'],
     relatedCategory: 'nhs-pay-calculators',
     relatedArticles: ['nhs-pension-contributions-explained', 'nhs-unsocial-hours-pay-explained'],
     officialSources: [
@@ -156,8 +156,8 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     relatedCalculators: [
       'nhs-pension-calculator',
       'nhs-pension-contribution-calculator',
-      'nhs-pension-tax-relief-calculator',
-      'nhs-pension-take-home-pay-calculator',
+      'nhs-pay-calculator',
+      'nhs-salary-sacrifice-calculator',
     ],
     relatedCategory: 'nhs-pension-calculators',
     relatedArticles: ['nhs-pay-bands-explained', 'nhs-unsocial-hours-pay-explained'],
@@ -233,9 +233,9 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     },
     relatedCalculators: [
       'nhs-unsocial-hours-calculator',
-      'nhs-night-shift-pay-calculator',
-      'nhs-weekend-pay-calculator',
       'nhs-bank-holiday-pay-calculator',
+      'nhs-overtime-calculator',
+      'nhs-pay-calculator',
     ],
     relatedCategory: 'nhs-shift-calculators',
     relatedArticles: ['nhs-overtime-rates-explained', 'nhs-pay-bands-explained'],
@@ -299,8 +299,8 @@ export const BLOG_ARTICLES: BlogArticle[] = [
     },
     relatedCalculators: [
       'nhs-overtime-calculator',
-      'nhs-hourly-pay-calculator',
-      'nhs-part-time-pay-calculator',
+      'nhs-pay-calculator',
+      'nhs-unsocial-hours-calculator',
       'nhs-bank-holiday-pay-calculator',
     ],
     relatedCategory: 'nhs-shift-calculators',

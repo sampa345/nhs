@@ -24,11 +24,8 @@ import {
 export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
   const [jurisdiction, setJurisdiction] = useState<UkJurisdiction>('england');
   const [yearsServiceStr, setYearsServiceStr] = useState<string>('6');
-  const [weeklyHoursStr, setWeeklyHoursStr] = useState<string>(
-    slug === 'nhs-holiday-entitlement-calculator' ? '23' : '37.5'
-  );
+  const [weeklyHoursStr, setWeeklyHoursStr] = useState<string>('37.5');
   const [monthsWorkedStr, setMonthsWorkedStr] = useState<string>('12');
-  const [shiftLengthStr, setShiftLengthStr] = useState<string>('11.5');
   const [annualSalaryStr, setAnnualSalaryStr] = useState<string>('36000');
   const [sickBand, setSickBand] = useState<'year-1' | 'year-2' | 'year-3' | 'year-4-5' | 'year-5-plus'>('year-3');
   const [absenceWeeksStr, setAbsenceWeeksStr] = useState<string>('16');
@@ -42,7 +39,6 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
   const yearsVal = validatePositiveNumber(yearsServiceStr, 'Years of NHS service', 0, 50);
   const hoursVal = validatePositiveNumber(weeklyHoursStr, 'Contracted weekly hours', 1, standardHours);
   const monthsVal = validatePositiveNumber(monthsWorkedStr, 'Months in leave year', 1, 12);
-  const shiftLenVal = validatePositiveNumber(shiftLengthStr, 'Shift length', 1, 24);
   const salaryVal = validatePositiveNumber(annualSalaryStr, 'Annual gross salary', 0, 500000);
   const absenceVal = validatePositiveNumber(absenceWeeksStr, 'Absence weeks', 1, 52);
   const sspVal = validatePositiveNumber(sspRateStr, 'Weekly SSP rate', 0, 500);
@@ -50,17 +46,14 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
 
   const handleJurisdictionChange = (next: UkJurisdiction) => {
     setJurisdiction(next);
-    if (slug !== 'nhs-holiday-entitlement-calculator') {
-      setWeeklyHoursStr(String(getStandardWeeklyHours(next)));
-    }
+    setWeeklyHoursStr(String(getStandardWeeklyHours(next)));
   };
 
   const handleReset = () => {
     setJurisdiction('england');
     setYearsServiceStr('6');
-    setWeeklyHoursStr(slug === 'nhs-holiday-entitlement-calculator' ? '23' : '37.5');
+    setWeeklyHoursStr('37.5');
     setMonthsWorkedStr('12');
-    setShiftLengthStr('11.5');
     setAnnualSalaryStr('36000');
     setSickBand('year-3');
     setAbsenceWeeksStr('16');
@@ -71,24 +64,18 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
     setRedundancyYearsStr('12');
   };
 
-  // 1 & 2: Annual Leave & Holiday Entitlement
-  if (slug === 'nhs-annual-leave-calculator' || slug === 'nhs-holiday-entitlement-calculator') {
+  // 1: Annual Leave Calculator
+  if (slug === 'nhs-annual-leave-calculator') {
     const leave = calculateAnnualLeaveEntitlement(
       yearsVal.value,
       hoursVal.value,
       jurisdiction,
       monthsVal.value
     );
-    const shiftsCovered =
-      shiftLenVal.value > 0 ? roundMoney(leave.proRataTotalHours / shiftLenVal.value) : 0;
 
     return (
       <CalculatorCardLayout
-        title={
-          slug === 'nhs-holiday-entitlement-calculator'
-            ? 'NHS Part-Time & Bank Holiday Hours Calculator'
-            : 'NHS Annual Leave Entitlement Calculator'
-        }
+        title="NHS Annual Leave Entitlement Calculator"
         onReset={handleReset}
         results={
           <>
@@ -101,18 +88,9 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
                   highlight: true,
                 },
                 {
-                  label:
-                    slug === 'nhs-holiday-entitlement-calculator'
-                      ? `Shifts Covered (${shiftLenVal.value}h Shifts)`
-                      : 'Mid-Year Pro-Rata Accrual',
-                  value:
-                    slug === 'nhs-holiday-entitlement-calculator'
-                      ? `${shiftsCovered} shifts`
-                      : `${leave.accruedHoursForMonthsWorked} hrs`,
-                  sublabel:
-                    slug === 'nhs-holiday-entitlement-calculator'
-                      ? `Bank Holiday pot alone: ${leave.proRataBankHolidayHours} hrs`
-                      : `For ${monthsVal.value} months in current leave year`,
+                  label: 'Mid-Year Pro-Rata Accrual',
+                  value: `${leave.accruedHoursForMonthsWorked} hrs`,
+                  sublabel: `For ${monthsVal.value} months in current leave year`,
                 },
               ]}
             />
@@ -147,29 +125,16 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
           max={standardHours}
           error={hoursVal.error}
         />
-        {slug === 'nhs-annual-leave-calculator' ? (
-          <NumberField
-            id="leave-months"
-            label="Months Worked in Leave Year (1–12)"
-            suffix="months"
-            value={monthsWorkedStr}
-            onChange={setMonthsWorkedStr}
-            min={1}
-            max={12}
-            error={monthsVal.error}
-          />
-        ) : (
-          <NumberField
-            id="leave-shift-len"
-            label="Typical Shift Length (to count shifts off)"
-            suffix="hrs/shift"
-            value={shiftLengthStr}
-            onChange={setShiftLengthStr}
-            min={1}
-            max={24}
-            error={shiftLenVal.error}
-          />
-        )}
+        <NumberField
+          id="leave-months"
+          label="Months Worked in Leave Year (1–12)"
+          suffix="months"
+          value={monthsWorkedStr}
+          onChange={setMonthsWorkedStr}
+          min={1}
+          max={12}
+          error={monthsVal.error}
+        />
       </CalculatorCardLayout>
     );
   }

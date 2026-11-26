@@ -42,7 +42,7 @@ const HOMEPAGE_FAQS = [
   {
     question: 'Are all calculators on NHSStaffCalculator.co.uk free to use?',
     answer:
-      'Yes. All 26 NHS salary, pension, shift, employment, and tax calculators are completely free to use with no registration or personal financial data collection.',
+      'Yes. All 17 NHS salary, pension, shift, employment, and tax calculators are completely free to use with no registration or personal financial data collection.',
   },
   {
     question: 'Which tax year and NHS pay scales are used?',
@@ -367,7 +367,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 4-Column Soft-Gray Quick Links (links to all 26 calculators cleanly with pipe separators) */}
+        {/* 4-Column Soft-Gray Quick Links (links to all 17 calculators cleanly with pipe separators) */}
         <section aria-labelledby="quick-links-heading" className="mt-10">
           <h2 id="quick-links-heading" className="font-display text-base font-bold text-[#2F3432] sm:text-lg">
             Quick links

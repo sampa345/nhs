@@ -7,6 +7,7 @@ import {
   buildJsonLdGraph,
   buildOrganizationNode,
   buildWebsiteNode,
+  DEFAULT_OG_IMAGE,
   SITE_CONFIG,
 } from '@/lib/seo/config';
 import './globals.css';
@@ -48,12 +49,21 @@ export const metadata: Metadata = {
     siteName: SITE_CONFIG.name,
     locale: 'en_GB',
     type: 'website',
+    images: [
+      {
+        url: `${SITE_CONFIG.domain}${DEFAULT_OG_IMAGE.url}`,
+        alt: DEFAULT_OG_IMAGE.alt,
+        width: DEFAULT_OG_IMAGE.width,
+        height: DEFAULT_OG_IMAGE.height,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'NHS Staff Calculator | Free UK NHS Pay, Pension & Tax Calculators',
     description:
       'Calculate your NHS take-home pay, pension contributions, overtime, shift payments, and employment entitlements for 2026/2027.',
+    images: [`${SITE_CONFIG.domain}${DEFAULT_OG_IMAGE.url}`],
   },
 };
 

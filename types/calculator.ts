@@ -7,23 +7,14 @@ export type CategorySlug =
 
 export type CalculatorSlug =
   | 'nhs-pay-calculator'
-  | 'nhs-take-home-pay-calculator'
   | 'nhs-salary-calculator'
-  | 'nhs-salary-after-tax-calculator'
   | 'nhs-band-calculator'
-  | 'nhs-hourly-pay-calculator'
-  | 'nhs-part-time-pay-calculator'
   | 'nhs-pension-calculator'
   | 'nhs-pension-contribution-calculator'
-  | 'nhs-pension-tax-relief-calculator'
-  | 'nhs-pension-take-home-pay-calculator'
   | 'nhs-overtime-calculator'
-  | 'nhs-night-shift-pay-calculator'
-  | 'nhs-weekend-pay-calculator'
   | 'nhs-unsocial-hours-calculator'
   | 'nhs-bank-holiday-pay-calculator'
   | 'nhs-annual-leave-calculator'
-  | 'nhs-holiday-entitlement-calculator'
   | 'nhs-sick-pay-calculator'
   | 'nhs-maternity-pay-calculator'
   | 'nhs-paternity-pay-calculator'
@@ -64,12 +55,31 @@ export interface CalculatorDefinition {
   intro: string;
   isPopular?: boolean;
   isFeatured?: boolean;
+  calculatorSectionHeading?: string;
+  calculatorSectionDescription?: string;
+  howToUseHeading?: string;
   howToUse: string[];
+  howItWorksHeading?: string;
   howItWorks: string[];
   payrollContext: string;
+  referenceTableHeading?: string;
+  referenceTableIntro?: string[];
+  referenceTableLink?: { label: string; href: string };
+  referenceTable?: {
+    caption: string;
+    headers: string[];
+    rows: string[][];
+  };
+  takeHomeSectionHeading?: string;
+  takeHomeParagraphs?: string[];
+  payRiseSection?: {
+    heading: string;
+    paragraphs: string[];
+  };
   example: ExampleCalculation;
   assumptions: string[];
   limitations: string[];
+  faqHeading?: string;
   faqs: FaqItem[];
   relatedCalculators: CalculatorSlug[];
   relatedGuides: string[];

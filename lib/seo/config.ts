@@ -4,12 +4,20 @@ import { canonicalUrl, normalizeTrailingSlash, SITE_CONFIG } from './constants';
 
 export { canonicalUrl, normalizeTrailingSlash, SITE_CONFIG };
 
+export const DEFAULT_OG_IMAGE = {
+  url: '/images/guides/nhs-pay-bands-explained-2026-2027.jpg',
+  alt: 'NHS Staff Calculator — 2026/2027 UK NHS Pay, Pension, Shift & Tax Calculators',
+  width: 1376,
+  height: 768,
+} as const;
+
 export function buildPageMetadata({
   title,
   description,
   path,
   type = 'website',
   image,
+  absoluteTitle = false,
 }: {
   title: string;
   description: string;
@@ -21,16 +29,21 @@ export function buildPageMetadata({
     width?: number;
     height?: number;
   };
+  absoluteTitle?: boolean;
 }): Metadata {
   const url = canonicalUrl(path);
-  const resolvedImageUrl = image
-    ? image.url.startsWith('http')
-      ? image.url
-      : `${SITE_CONFIG.domain}${image.url.startsWith('/') ? image.url : `/${image.url}`}`
-    : undefined;
+  const selectedImage = image ?? {
+    url: DEFAULT_OG_IMAGE.url,
+    alt: title,
+    width: DEFAULT_OG_IMAGE.width,
+    height: DEFAULT_OG_IMAGE.height,
+  };
+  const resolvedImageUrl = selectedImage.url.startsWith('http')
+    ? selectedImage.url
+    : `${SITE_CONFIG.domain}${selectedImage.url.startsWith('/') ? selectedImage.url : `/${selectedImage.url}`}`;
 
   return {
-    title,
+    title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: {
       canonical: url,
@@ -42,24 +55,20 @@ export function buildPageMetadata({
       siteName: SITE_CONFIG.name,
       locale: 'en_GB',
       type,
-      ...(resolvedImageUrl && image
-        ? {
-            images: [
-              {
-                url: resolvedImageUrl,
-                alt: image.alt,
-                width: image.width ?? 1376,
-                height: image.height ?? 768,
-              },
-            ],
-          }
-        : {}),
+      images: [
+        {
+          url: resolvedImageUrl,
+          alt: selectedImage.alt,
+          width: selectedImage.width ?? DEFAULT_OG_IMAGE.width,
+          height: selectedImage.height ?? DEFAULT_OG_IMAGE.height,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      ...(resolvedImageUrl ? { images: [resolvedImageUrl] } : {}),
+      images: [resolvedImageUrl],
     },
     robots: {
       index: true,
