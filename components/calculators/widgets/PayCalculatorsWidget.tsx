@@ -43,9 +43,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
   const [unsocialMonthlyStr, setUnsocialMonthlyStr] = useState<string>('0');
   const [sacrificeMonthlyStr, setSacrificeMonthlyStr] = useState<string>('0');
   const [payFrequency, setPayFrequency] = useState<PayFrequency>('monthly');
-  const [payRisePctStr, setPayRisePctStr] = useState<string>('5');
+  const [payRisePctStr, setPayRisePctStr] = useState<string>('3.3');
   const [targetBandId, setTargetBandId] = useState<AfcBandId>('band-6');
   const [targetStepIndex, setTargetStepIndex] = useState<number>(0);
+  const [includeBackPay, setIncludeBackPay] = useState<boolean>(false);
+  const [backPayMonthsStr, setBackPayMonthsStr] = useState<string>('4');
+  const [backPayUpliftStr, setBackPayUpliftStr] = useState<string>('3.3');
 
   const scales = getAfcScalesForJurisdiction(jurisdiction);
   const activeBand = scales.find((b) => b.bandId === bandId) ?? scales[3];
@@ -58,6 +61,8 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
   const unsocialVal = validatePositiveNumber(unsocialMonthlyStr, 'Monthly unsocial pay', 0, 10000);
   const sacrificeVal = validatePositiveNumber(sacrificeMonthlyStr, 'Monthly salary sacrifice', 0, 5000);
   const riseVal = validatePositiveNumber(payRisePctStr, 'Pay rise %', 0, 100);
+  const backPayMonthsVal = validatePositiveNumber(backPayMonthsStr, 'Back pay months', 1, 12);
+  const backPayUpliftVal = validatePositiveNumber(backPayUpliftStr, 'Back pay uplift %', 0.1, 50);
 
   const fullTimeBasicSalary = useCustomSalary ? salaryVal.value : bandSalary;
   const contractedHours = slug === 'nhs-pay-calculator' ? hoursVal.value : standardHours;
@@ -85,9 +90,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     setUnsocialMonthlyStr('0');
     setSacrificeMonthlyStr('0');
     setPayFrequency('monthly');
-    setPayRisePctStr('5');
+    setPayRisePctStr('3.3');
     setTargetBandId('band-6');
     setTargetStepIndex(0);
+    setIncludeBackPay(false);
+    setBackPayMonthsStr('4');
+    setBackPayUpliftStr('3.3');
   };
 
   const payResult = calculateFullNhsPay2026_2027({
@@ -125,6 +133,20 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     const grossDiff = roundMoney(targetFull.totalGrossPay - currentFull.totalGrossPay);
     const netMonthlyDiff = roundMoney(targetFull.netPayMonthly - currentFull.netPayMonthly);
 
+    const applyBandPreset = (
+      fromBand: AfcBandId,
+      fromStep: 'entry' | 'top',
+      toBand: AfcBandId,
+      toStep: 'entry' | 'top'
+    ) => {
+      const fromScale = scales.find((b) => b.bandId === fromBand) ?? scales[3];
+      const toScale = scales.find((b) => b.bandId === toBand) ?? scales[4];
+      setBandId(fromBand);
+      setStepIndex(fromStep === 'top' ? fromScale.points.length - 1 : 0);
+      setTargetBandId(toBand);
+      setTargetStepIndex(toStep === 'top' ? toScale.points.length - 1 : 0);
+    };
+
     return (
       <CalculatorCardLayout title="NHS Band & Step Comparison (2026/2027)" onReset={handleReset} results={
         <>
@@ -142,6 +164,22 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
                 sublabel: `${netMonthlyDiff >= 0 ? '+' : ''}${formatGBP(netMonthlyDiff)}/mo net difference`,
               },
             ]}
+          />
+          <BreakdownTable
+            title={`${activeBand.bandLabel} Step-by-Step Pay & Net Monthly Breakdown`}
+            rows={activeBand.points.map((pt) => {
+              const stepFull = calculateFullNhsPay2026_2027({
+                fullTimeBasicSalary: pt.annualSalary,
+                jurisdiction,
+                hcasZone,
+                pensionOptIn: true,
+              });
+              const hourly = calculateBasicHourlyRate(pt.annualSalary, jurisdiction);
+              return {
+                label: `${pt.stepName} (${pt.yearsExperience})`,
+                value: `${formatGBP(stepFull.totalGrossPay, false)} · ${formatGBP(hourly)}/hr · ${formatGBP(stepFull.netPayMonthly)}/mo net`,
+              };
+            })}
           />
           <BreakdownTable
             title={`All ${jurisdiction.replace('-', ' ').toUpperCase()} Agenda for Change Bands (2026/27)`}
@@ -206,6 +244,52 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
               </select>
             </div>
           </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => applyBandPreset('band-5', 'top', 'band-6', 'entry')}
+              className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                bandId === 'band-5' && targetBandId === 'band-6'
+                  ? 'border-[#149777] bg-emerald-50 text-[#149777]'
+                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+              }`}
+            >
+              Band 5 Top → Band 6
+            </button>
+            <button
+              type="button"
+              onClick={() => applyBandPreset('band-6', 'entry', 'band-6', 'top')}
+              className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                bandId === 'band-6' && targetBandId === 'band-6'
+                  ? 'border-[#149777] bg-emerald-50 text-[#149777]'
+                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+              }`}
+            >
+              Band 6 Entry → Top
+            </button>
+            <button
+              type="button"
+              onClick={() => applyBandPreset('band-6', 'top', 'band-7', 'entry')}
+              className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                bandId === 'band-6' && targetBandId === 'band-7'
+                  ? 'border-[#149777] bg-emerald-50 text-[#149777]'
+                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+              }`}
+            >
+              Band 6 Top → Band 7
+            </button>
+            <button
+              type="button"
+              onClick={() => applyBandPreset('band-7', 'entry', 'band-7', 'top')}
+              className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                bandId === 'band-7' && targetBandId === 'band-7'
+                  ? 'border-[#149777] bg-emerald-50 text-[#149777]'
+                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+              }`}
+            >
+              Band 7 Entry → Top
+            </button>
+          </div>
         </div>
       </CalculatorCardLayout>
     );
@@ -214,25 +298,28 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
   // Specialized view: Gross Salary Converter + Uplift Comparison
   if (slug === 'nhs-salary-calculator') {
     const baseGross = roundMoney(fullTimeBasicSalary + payResult.hcasAllowance);
-    const upliftedGross = roundMoney(baseGross * (1 + riseVal.value / 100));
+    const upliftMultiplier = 1 + riseVal.value / 100;
+    const upliftedGross = roundMoney(baseGross * upliftMultiplier);
+    const grossGainAnnual = roundMoney(upliftedGross - baseGross);
     const basicHourly = calculateBasicHourlyRate(fullTimeBasicSalary, jurisdiction);
+    const upliftedHourly = calculateBasicHourlyRate(roundMoney(fullTimeBasicSalary * upliftMultiplier), jurisdiction);
     const dailyRate = roundMoney(baseGross / 260.714);
 
     return (
-      <CalculatorCardLayout title="NHS Gross Salary & Pay Rise Converter (2026/2027)" onReset={handleReset} results={
+      <CalculatorCardLayout title="NHS Salary & 2026/27 Pay Rise Calculator" onReset={handleReset} results={
         <>
           <KpiGrid
             items={[
               {
                 label: 'Current Annual Gross Pay',
                 value: formatGBP(baseGross),
-                sublabel: `${formatGBP(roundMoney(baseGross / 12))}/month before deductions`,
+                sublabel: `${formatGBP(roundMoney(baseGross / 12))}/month · ${formatGBP(basicHourly)}/hr basic`,
                 highlight: true,
               },
               {
-                label: `With +${riseVal.value}% Comparison Uplift`,
+                label: `With +${riseVal.value}% Pay Rise Uplift`,
                 value: formatGBP(upliftedGross),
-                sublabel: `+${formatGBP(roundMoney(upliftedGross - baseGross))}/yr gross increase`,
+                sublabel: `+${formatGBP(grossGainAnnual)}/yr (+${formatGBP(roundMoney(grossGainAnnual / 12))}/mo)`,
               },
             ]}
           />
@@ -245,6 +332,16 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
               { label: 'Weekly Gross (÷ 52.1429)', value: formatGBP(roundMoney(baseGross / 52.1429)) },
               { label: 'Daily Gross (5-day week)', value: formatGBP(dailyRate) },
               { label: `Basic Hourly Rate (${standardHours}h week)`, value: `${formatGBP(basicHourly)} / hr` },
+            ]}
+          />
+          <BreakdownTable
+            title={`Pay Rise Comparison (+${riseVal.value}% Uplift)`}
+            rows={[
+              { label: 'Uplifted Annual Gross', value: formatGBP(upliftedGross), tone: 'total' },
+              { label: 'Uplifted Monthly Gross (÷ 12)', value: formatGBP(roundMoney(upliftedGross / 12)) },
+              { label: `Uplifted Basic Hourly Rate (${standardHours}h)`, value: `${formatGBP(upliftedHourly)} / hr` },
+              { label: 'Monthly Gross Pay Rise', value: `+${formatGBP(roundMoney(grossGainAnnual / 12))}`, tone: 'positive' },
+              { label: 'Annual Gross Pay Rise', value: `+${formatGBP(grossGainAnnual)}`, tone: 'positive' },
             ]}
           />
         </>
@@ -280,13 +377,33 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
         <HcasSelect value={hcasZone} onChange={setHcasZone} />
         <NumberField
           id="pay-rise-pct"
-          label="Compare Pay Rise / Promotion Uplift (%)"
+          label="Pay Rise / Promotion Uplift (%)"
           suffix="%"
           value={payRisePctStr}
           onChange={setPayRisePctStr}
           max={100}
           error={riseVal.error}
         />
+        <div className="flex flex-wrap gap-2">
+          {[
+            { label: '3.3% (2026/27 AfC)', value: '3.3' },
+            { label: '+5%', value: '5' },
+            { label: '+10%', value: '10' },
+          ].map((preset) => (
+            <button
+              key={preset.value}
+              type="button"
+              onClick={() => setPayRisePctStr(preset.value)}
+              className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+                payRisePctStr === preset.value
+                  ? 'border-[#149777] bg-emerald-50 text-[#149777]'
+                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+              }`}
+            >
+              {preset.label}
+            </button>
+          ))}
+        </div>
       </CalculatorCardLayout>
     );
   }
@@ -312,6 +429,33 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
 
   const netKeptPct =
     payResult.totalGrossPay > 0 ? payResult.netPayAnnual / payResult.totalGrossPay : 0;
+
+  const backPayUpliftFactor = 1 + backPayUpliftVal.value / 100;
+  const preUpliftFullTimeSalary = roundMoney(fullTimeBasicSalary / backPayUpliftFactor);
+  const preUpliftUnsocialAnnual = roundMoney((unsocialVal.value * 12) / backPayUpliftFactor);
+  const preUpliftPayResult = includeBackPay
+    ? calculateFullNhsPay2026_2027({
+        fullTimeBasicSalary: preUpliftFullTimeSalary,
+        jurisdiction,
+        contractedWeeklyHours: contractedHours,
+        hcasZone,
+        additionalUnsocialAnnualPay: preUpliftUnsocialAnnual,
+        salarySacrificeAnnual: sacrificeVal.value * 12,
+        pensionOptIn,
+        studentLoanPlan,
+        hasPostgraduateLoan: hasPostgrad,
+        taxCode,
+      })
+    : null;
+
+  const backPayMonths = Math.min(12, Math.max(1, Math.round(backPayMonthsVal.value)));
+  const grossBackPay = preUpliftPayResult
+    ? roundMoney(((payResult.totalGrossPay - preUpliftPayResult.totalGrossPay) / 12) * backPayMonths)
+    : 0;
+  const netBackPay = preUpliftPayResult
+    ? roundMoney(((payResult.netPayAnnual - preUpliftPayResult.netPayAnnual) / 12) * backPayMonths)
+    : 0;
+  const backPayDeductions = roundMoney(Math.max(0, grossBackPay - netBackPay));
 
   return (
     <CalculatorCardLayout
@@ -390,6 +534,23 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
                 label: `${b.bandName} (${Math.round(b.rate * 100)}% on ${formatGBP(b.taxableAmount)})`,
                 value: formatGBP(b.taxAmount),
               }))}
+            />
+          )}
+
+          {includeBackPay && preUpliftPayResult && (
+            <BreakdownTable
+              title={`Estimated NHS Back Pay Arrears (${backPayMonths} ${backPayMonths === 1 ? 'Month' : 'Months'} @ ${backPayUpliftVal.value}%)`}
+              rows={[
+                { label: 'Pre-Uplift Annual Gross', value: formatGBP(preUpliftPayResult.totalGrossPay) },
+                { label: '2026/27 Uplifted Annual Gross', value: formatGBP(payResult.totalGrossPay) },
+                { label: `Gross Back Pay (${backPayMonths} mo arrears)`, value: formatGBP(grossBackPay) },
+                {
+                  label: 'Est. Tax, NI, Pension & Loan Deductions',
+                  value: `-${formatGBP(backPayDeductions)}`,
+                  tone: 'deduction',
+                },
+                { label: `Estimated Net Back Pay (${backPayMonths} mo)`, value: formatGBP(netBackPay), tone: 'positive' },
+              ]}
             />
           )}
 
@@ -507,6 +668,42 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
         hasPostgrad={hasPostgrad}
         onPostgradChange={setHasPostgrad}
       />
+
+      <div className="border-t border-slate-200 pt-3">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm font-medium text-slate-700">
+          <input
+            type="checkbox"
+            checked={includeBackPay}
+            onChange={(e) => setIncludeBackPay(e.target.checked)}
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
+          />
+          <span>Estimate NHS back pay arrears</span>
+        </label>
+        {includeBackPay && (
+          <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <NumberField
+              id="back-pay-months"
+              label="Months of Arrears"
+              suffix="mo"
+              value={backPayMonthsStr}
+              onChange={setBackPayMonthsStr}
+              min={1}
+              max={12}
+              error={backPayMonthsVal.error}
+            />
+            <NumberField
+              id="back-pay-uplift"
+              label="Pay Award Uplift (%)"
+              suffix="%"
+              value={backPayUpliftStr}
+              onChange={setBackPayUpliftStr}
+              min={0.1}
+              max={50}
+              error={backPayUpliftVal.error}
+            />
+          </div>
+        )}
+      </div>
     </CalculatorCardLayout>
   );
 }
