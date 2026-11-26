@@ -211,7 +211,7 @@ export default function HomePage() {
             </h2>
             <Link
               href="/nhs-pay-calculators/"
-              className="text-xs font-semibold text-[#0074BA] hover:underline sm:text-sm"
+              className="inline-flex min-h-[44px] items-center text-xs font-semibold text-[#0074BA] hover:underline sm:min-h-0 sm:text-sm"
             >
               View all {ALL_CALCULATORS.length} tools
             </Link>
@@ -277,12 +277,12 @@ export default function HomePage() {
                       {preview.metrics.map((metric) => (
                         <div
                           key={metric.label}
-                          className="rounded-sm border border-slate-100 bg-slate-50 px-2.5 py-3 text-center"
+                          className="min-w-0 rounded-sm border border-slate-100 bg-slate-50 px-1.5 py-2.5 text-center sm:px-2.5 sm:py-3"
                         >
-                          <p className="truncate text-[11px] font-medium text-slate-500">
+                          <p className="truncate text-[10px] font-medium text-slate-500 sm:text-[11px]">
                             {metric.label}
                           </p>
-                          <p className="mt-0.5 truncate font-mono text-xs font-bold tabular-nums text-[#2F3432] sm:text-sm">
+                          <p className="mt-0.5 truncate font-mono text-[11px] font-bold tabular-nums text-[#2F3432] sm:text-sm">
                             {metric.value}
                           </p>
                         </div>
@@ -305,7 +305,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2.5">
+                  <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-2.5">
                     <span className="font-mono text-sm font-bold tabular-nums text-[#149777]">
                       {preview.primaryFigure}
                     </span>
@@ -323,11 +323,11 @@ export default function HomePage() {
         {/* Split Dual-CTA Card (Yellow CTA left, Blue CTA right — matching screenshot) */}
         <section aria-label="Featured actions" className="mt-10 rounded-lg border border-slate-200 bg-white shadow-xs">
           <div className="grid grid-cols-1 divide-y divide-slate-200 md:grid-cols-2 md:divide-x md:divide-y-0">
-            <div className="flex items-center gap-5 p-6 sm:p-8">
+            <div className="flex items-center gap-5 p-5 sm:p-8">
               <div className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-[#149777] sm:flex">
                 <Calculator className="h-8 w-8" aria-hidden="true" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h2 className="font-display text-lg font-bold text-[#2F3432] sm:text-xl">
                   Calculate your 2026/27 take-home pay
                 </h2>
@@ -336,7 +336,7 @@ export default function HomePage() {
                 </p>
                 <Link
                   href="/nhs-pay-calculator/"
-                  className="mt-4 inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-[#FFC800] px-5 py-2 text-xs font-bold text-[#2F3432] transition-colors hover:bg-[#f2be00] sm:text-sm"
+                  className="mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-[#FFC800] px-5 py-2 text-xs font-bold text-[#2F3432] transition-colors hover:bg-[#f2be00] sm:text-sm"
                 >
                   <span>Open Pay Calculator</span>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -344,11 +344,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-5 p-6 sm:p-8">
+            <div className="flex items-center gap-5 p-5 sm:p-8">
               <div className="hidden h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-sky-50 text-[#0074BA] sm:flex">
                 <BookOpen className="h-8 w-8" aria-hidden="true" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h2 className="font-display text-lg font-bold text-[#0074BA] sm:text-xl">
                   NHS Pay &amp; Pension Guides
                 </h2>
@@ -357,7 +357,7 @@ export default function HomePage() {
                 </p>
                 <Link
                   href="/blog/"
-                  className="mt-4 inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-[#0074BA] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#00619c] sm:text-sm"
+                  className="mt-4 inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-[#0074BA] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#00619c] sm:text-sm"
                 >
                   <span>Explore blog</span>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -394,13 +394,13 @@ export default function HomePage() {
             ].map((group) => (
               <div key={group.title} className="rounded bg-[#F3F4F6] p-4">
                 <h3 className="text-sm font-bold text-[#2F3432]">{group.title}</h3>
-                <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                <p className="mt-2 text-xs leading-7 text-slate-600 sm:leading-relaxed">
                   {group.items.map((calc, index) => (
                     <span key={calc.slug}>
                       {index > 0 && <span className="mx-1 text-slate-400">|</span>}
                       <Link
                         href={`/${calc.slug}/`}
-                        className="hover:text-[#149777] hover:underline"
+                        className="inline-block py-0.5 hover:text-[#149777] hover:underline sm:py-0"
                       >
                         {calc.shortTitle}
                       </Link>
@@ -446,11 +446,14 @@ export default function HomePage() {
 
           {/* Latest NHS Guides */}
           <div>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <h3 className="font-display text-lg font-bold text-[#2F3432]">
                 Latest NHS Pay &amp; Pension Guides
               </h3>
-              <Link href="/blog/" className="text-xs font-semibold text-[#0074BA] hover:underline">
+              <Link
+                href="/blog/"
+                className="inline-flex min-h-[44px] items-center text-xs font-semibold text-[#0074BA] hover:underline sm:min-h-0"
+              >
                 View blog →
               </Link>
             </div>
@@ -518,10 +521,10 @@ export default function HomePage() {
               <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
                 Every formula is cross-checked against publications from NHS Employers, NHSBSA, SPPA, GOV.UK, and HMRC.
               </p>
-              <div className="mt-4 flex flex-wrap gap-4 text-xs font-semibold text-[#0074BA]">
-                <Link href="/editorial-policy/" className="hover:underline">Editorial Policy</Link>
-                <Link href="/disclaimer/" className="hover:underline">Disclaimer</Link>
-                <Link href="/about/" className="hover:underline">About NHS Staff Calculator</Link>
+              <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-[#0074BA]">
+                <Link href="/editorial-policy/" className="inline-flex min-h-[36px] items-center hover:underline sm:min-h-0">Editorial Policy</Link>
+                <Link href="/disclaimer/" className="inline-flex min-h-[36px] items-center hover:underline sm:min-h-0">Disclaimer</Link>
+                <Link href="/about/" className="inline-flex min-h-[36px] items-center hover:underline sm:min-h-0">About NHS Staff Calculator</Link>
               </div>
             </div>
           </div>

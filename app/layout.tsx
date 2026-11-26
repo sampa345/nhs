@@ -64,9 +64,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${plusJakarta.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-white text-[#2F3432]" suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[#FFC800] focus:px-4 focus:py-2.5 focus:text-sm focus:font-bold focus:text-[#2F3432] focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <JsonLd data={buildJsonLdGraph(buildOrganizationNode(), buildWebsiteNode())} />
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">{children}</main>
         <SiteFooter />
       </body>
     </html>

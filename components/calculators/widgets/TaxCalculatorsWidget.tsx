@@ -96,11 +96,11 @@ export function TaxCalculatorsWidget({ slug }: { slug: string }) {
             value={taxCode}
             onChange={(e) => setTaxCode(e.target.value)}
             placeholder="1257L"
-            className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 font-mono text-sm uppercase text-[#2F3432] focus:border-[#149777] focus:outline-none"
+            className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 font-mono text-base uppercase text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
           />
         </div>
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
-          <input type="checkbox" checked={pensionOptIn} onChange={(e) => setPensionOptIn(e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-[#149777]" />
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
+          <input type="checkbox" checked={pensionOptIn} onChange={(e) => setPensionOptIn(e.target.checked)} className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]" />
           <span>Deduct NHS Pension before Income Tax (Net Pay)</span>
         </label>
       </CalculatorCardLayout>
@@ -213,8 +213,8 @@ export function TaxCalculatorsWidget({ slug }: { slug: string }) {
         <JurisdictionSelect value={jurisdiction} onChange={setJurisdiction} />
         <NumberField id="sac-salary" label="Annual Gross NHS Salary (Before Sacrifice)" prefix="£" value={salaryStr} onChange={setSalaryStr} error={salaryVal.error} />
         <NumberField id="sac-amount" label="Monthly Gross Salary Sacrifice (Fleet / Cycle)" prefix="£" suffix="/ mo" value={sacrificeMonthlyStr} onChange={setSacrificeMonthlyStr} error={sacrificeVal.error} />
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
-          <input type="checkbox" checked={pensionOptIn} onChange={(e) => setPensionOptIn(e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-[#149777]" />
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
+          <input type="checkbox" checked={pensionOptIn} onChange={(e) => setPensionOptIn(e.target.checked)} className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]" />
           <span>Enrolled in 2015 NHS CARE Pension Scheme</span>
         </label>
         <StudentLoanSelect plan={studentLoanPlan} onPlanChange={setStudentLoanPlan} hasPostgrad={hasPostgrad} onPostgradChange={setHasPostgrad} />

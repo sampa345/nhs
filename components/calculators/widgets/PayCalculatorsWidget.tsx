@@ -194,7 +194,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
                 id="target-band-select"
                 value={targetBandId}
                 onChange={(e) => { setTargetBandId(e.target.value as AfcBandId); setTargetStepIndex(0); }}
-                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432]"
+                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
               >
                 {scales.map((b) => (
                   <option key={b.bandId} value={b.bandId}>{b.bandLabel}</option>
@@ -209,7 +209,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
                 id="target-step-select"
                 value={safeTargetStep}
                 onChange={(e) => setTargetStepIndex(Number(e.target.value))}
-                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432]"
+                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
               >
                 {targetBand.points.map((pt, idx) => (
                   <option key={pt.stepName} value={idx}>
@@ -277,12 +277,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
         </>
       }>
         <JurisdictionSelect value={jurisdiction} onChange={handleJurisdictionChange} />
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={useCustomSalary}
             onChange={(e) => setUseCustomSalary(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
           />
           <span>Enter custom annual salary instead of AfC Band</span>
         </label>
@@ -304,12 +304,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
             onStepChange={setStepIndex}
           />
         )}
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={includeBankWtr}
             onChange={(e) => setIncludeBankWtr(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
           />
           <span>Include 12.07% NHS Bank WTR rolled-up holiday pay</span>
         </label>
@@ -356,12 +356,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
         </>
       }>
         <JurisdictionSelect value={jurisdiction} onChange={handleJurisdictionChange} />
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={useCustomSalary}
             onChange={(e) => setUseCustomSalary(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
           />
           <span>Custom salary (Doctors, Dentists, VSM)</span>
         </label>
@@ -473,12 +473,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
           error={serviceVal.error}
         />
         <HcasSelect value={hcasZone} onChange={setHcasZone} />
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={pensionOptIn}
             onChange={(e) => setPensionOptIn(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
           />
           <span>Member of NHS Pension Scheme</span>
         </label>
@@ -615,12 +615,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
     >
       <JurisdictionSelect value={jurisdiction} onChange={handleJurisdictionChange} />
 
-      <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+      <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
         <input
           type="checkbox"
           checked={useCustomSalary}
           onChange={(e) => setUseCustomSalary(e.target.checked)}
-          className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+          className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
         />
         <span>Enter custom annual salary (e.g. Doctor / Dentist)</span>
       </label>
@@ -690,7 +690,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
                 value={taxCode}
                 onChange={(e) => setTaxCode(e.target.value)}
                 placeholder="1257L"
-                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 font-mono text-sm uppercase text-[#2F3432] focus:border-[#149777] focus:outline-none"
+                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 font-mono text-base uppercase text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
               />
             </div>
             <div>
@@ -701,7 +701,7 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
                 id="pay-frequency-select"
                 value={payFrequency}
                 onChange={(e) => setPayFrequency(e.target.value as PayFrequency)}
-                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432]"
+                className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
               >
                 <option value="monthly">Monthly (12/yr)</option>
                 <option value="four-weekly">Four-Weekly (13/yr)</option>
@@ -713,12 +713,12 @@ export function PayCalculatorsWidget({ slug }: { slug: string }) {
         </>
       )}
 
-      <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+      <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
         <input
           type="checkbox"
           checked={pensionOptIn}
           onChange={(e) => setPensionOptIn(e.target.checked)}
-          className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+          className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
         />
         <span>Enrolled in NHS Pension Scheme (Net Pay relief)</span>
       </label>

@@ -174,12 +174,12 @@ export function ShiftCalculatorsWidget({ slug }: { slug: string }) {
           onChange={setBhOvertimeStr}
           error={bhOtVal.error}
         />
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={includeBankWtr}
             onChange={(e) => setIncludeBankWtr(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
           />
           <span>Add 12.07% WTR Bank Holiday Pay (Bank shifts only)</span>
         </label>
@@ -404,12 +404,13 @@ export function ShiftCalculatorsWidget({ slug }: { slug: string }) {
           error={bhVal.error}
         />
         <div>
-          <span className="block text-xs font-semibold text-[#2F3432]">Shift Classification</span>
-          <div className="mt-1.5 grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1">
+          <span id="bh-classification-label" className="block text-xs font-semibold text-[#2F3432]">Shift Classification</span>
+          <div role="group" aria-labelledby="bh-classification-label" className="mt-1.5 grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1">
             <button
               type="button"
+              aria-pressed={bhMode === 'rostered'}
               onClick={() => setBhMode('rostered')}
-              className={`min-h-[38px] rounded-md px-3 text-xs font-medium transition-colors whitespace-nowrap ${
+              className={`min-h-[44px] rounded-md px-2 py-1.5 text-xs font-medium leading-tight transition-colors sm:px-3 ${
                 bhMode === 'rostered' ? 'bg-white text-[#149777] shadow-xs' : 'text-slate-600'
               }`}
             >
@@ -417,8 +418,9 @@ export function ShiftCalculatorsWidget({ slug }: { slug: string }) {
             </button>
             <button
               type="button"
+              aria-pressed={bhMode === 'overtime'}
               onClick={() => setBhMode('overtime')}
-              className={`min-h-[38px] rounded-md px-3 text-xs font-medium transition-colors whitespace-nowrap ${
+              className={`min-h-[44px] rounded-md px-2 py-1.5 text-xs font-medium leading-tight transition-colors sm:px-3 ${
                 bhMode === 'overtime' ? 'bg-white text-[#149777] shadow-xs' : 'text-slate-600'
               }`}
             >

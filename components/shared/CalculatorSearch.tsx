@@ -52,8 +52,13 @@ export function CalculatorSearch({ initialQuery = '' }: { initialQuery?: string 
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape' && query) {
+              setQuery('');
+            }
+          }}
           placeholder="What NHS calculator are you looking for? (e.g. Band 5, pension, night shift)"
-          className="h-11 w-full rounded-full bg-transparent pl-5 pr-14 text-sm text-[#2F3432] placeholder:text-slate-400 focus:outline-none sm:text-base"
+          className="h-11 w-full rounded-full bg-transparent pl-4 pr-14 text-base text-[#2F3432] placeholder:text-slate-400 focus:outline-none sm:pl-5"
         />
         <span
           aria-hidden="true"
@@ -67,7 +72,8 @@ export function CalculatorSearch({ initialQuery = '' }: { initialQuery?: string 
         <div
           role="region"
           aria-label="Search results"
-          className="absolute left-0 right-0 z-30 mt-2 divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white text-left shadow-xl"
+          aria-live="polite"
+          className="absolute left-0 right-0 z-30 mt-2 max-h-[60vh] divide-y divide-slate-100 overflow-y-auto rounded-xl border border-slate-200 bg-white text-left shadow-xl"
         >
           {results.length === 0 ? (
             <div className="p-4 text-sm text-slate-600">
@@ -78,7 +84,7 @@ export function CalculatorSearch({ initialQuery = '' }: { initialQuery?: string 
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-slate-50"
+                className="flex min-h-[48px] items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-slate-50 sm:gap-4"
               >
                 <div className="flex items-start gap-3 min-w-0">
                   <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#149777]/10 text-[#149777]">

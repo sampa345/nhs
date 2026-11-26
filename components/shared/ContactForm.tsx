@@ -47,7 +47,7 @@ export function ContactForm() {
                 setEmail('');
                 setMessage('');
               }}
-              className="mt-4 rounded-lg border border-emerald-300 bg-white px-4 py-2 text-xs font-semibold text-emerald-900 hover:bg-emerald-100"
+              className="mt-4 inline-flex min-h-[44px] items-center rounded-lg border border-emerald-300 bg-white px-4 py-2 text-xs font-semibold text-emerald-900 hover:bg-emerald-100"
             >
               Send another enquiry
             </button>
@@ -58,7 +58,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6">
+    <form onSubmit={handleSubmit} noValidate className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
       <div>
         <label htmlFor="contact-name" className="block text-xs font-semibold text-[#2F3432]">
           Your Name
@@ -68,7 +68,7 @@ export function ContactForm() {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 px-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
           required
         />
       </div>
@@ -82,7 +82,7 @@ export function ContactForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 px-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
           required
         />
       </div>
@@ -95,7 +95,7 @@ export function ContactForm() {
           id="contact-topic"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
-          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432]"
+          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] sm:text-sm"
         >
           <option>Dataset or Calculation Query</option>
           <option>Report an Outdated Pay Circular</option>
@@ -114,7 +114,7 @@ export function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Please avoid including sensitive personal identifiers such as your National Insurance number or ESR payroll ID."
-          className="mt-1.5 w-full rounded-lg border border-slate-200 p-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+          className="mt-1.5 w-full rounded-lg border border-slate-200 p-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
           required
         />
       </div>

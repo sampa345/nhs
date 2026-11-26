@@ -44,7 +44,7 @@ export default function AboutPage() {
       <JsonLd data={schemaGraph} />
       <Breadcrumbs items={breadcrumbs} />
 
-      <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+      <h1 className="font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
         About NHS Staff Calculator
       </h1>
       <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -52,14 +52,14 @@ export default function AboutPage() {
       </p>
 
       <div className="mt-8 space-y-6 text-sm leading-relaxed text-slate-700 sm:text-base">
-        <section className="rounded-2xl border border-slate-200 bg-white p-6">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="font-display text-xl font-bold text-[#2F3432]">Why We Built This Platform</h2>
           <p className="mt-3">
             UK NHS payslips combine devolved Agenda for Change pay awards, London High Cost Area Supplements, Section 2 unsocial hours multipliers, tiered Net Pay pension deductions, Class 1 National Insurance, and Student Loan plans. Generic UK salary calculators frequently miss these NHS-specific rules—such as excluding HCAS from shift enhancements or assessing part-time pension tiers on actual earnings rather than whole-time equivalent salary.
           </p>
         </section>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="font-display text-xl font-bold text-[#2F3432]">UK-Wide Accuracy &amp; Privacy</h2>
           <p className="mt-3">
             Our centralised 2026/2027 calculation engine separates England, Wales, Scotland (including Scotland’s 36-hour working week, SPPA pension tiers, and Scottish Income Tax bands), and Northern Ireland. All calculations run strictly inside your browser so no salary or personal details are ever transmitted or stored on external servers.
@@ -68,9 +68,9 @@ export default function AboutPage() {
 
         <DisclaimerBanner />
 
-        <div className="flex flex-wrap gap-4 pt-2 text-sm font-semibold text-[#0074BA]">
-          <Link href="/editorial-policy/" className="hover:underline">Read our Editorial Policy →</Link>
-          <Link href="/nhs-pay-calculator/" className="hover:underline">Try the NHS Pay Calculator →</Link>
+        <div className="flex flex-wrap gap-x-4 gap-y-2 pt-2 text-sm font-semibold text-[#0074BA]">
+          <Link href="/editorial-policy/" className="inline-flex min-h-[44px] items-center hover:underline sm:min-h-0">Read our Editorial Policy →</Link>
+          <Link href="/nhs-pay-calculator/" className="inline-flex min-h-[44px] items-center hover:underline sm:min-h-0">Try the NHS Pay Calculator →</Link>
         </div>
       </div>
     </div>

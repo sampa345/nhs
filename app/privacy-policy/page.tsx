@@ -8,6 +8,7 @@ import {
   canonicalUrl,
   SITE_CONFIG,
 } from '@/lib/seo/config';
+import { GOVERNANCE_CONTENT_DATES } from '@/lib/seo/routes';
 
 export const metadata = buildPageMetadata({
   title: 'Privacy Policy | NHS Staff Calculator',
@@ -31,7 +32,7 @@ export default function PrivacyPolicyPage() {
       description:
         'Read the Privacy Policy for NHSStaffCalculator.co.uk, explaining client-side calculation privacy, cookies, and Google AdSense data practices.',
       pageType: 'WebPage',
-      dateModified: '2026-04-10',
+      dateModified: GOVERNANCE_CONTENT_DATES[path],
       breadcrumbId: `${pageUrl}#breadcrumb`,
     }),
     buildBreadcrumbNode(breadcrumbs, path)
@@ -42,12 +43,12 @@ export default function PrivacyPolicyPage() {
       <JsonLd data={schemaGraph} />
       <Breadcrumbs items={breadcrumbs} />
 
-      <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+      <h1 className="font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
         Privacy Policy
       </h1>
       <p className="mt-2 text-xs text-slate-500">Last updated: 10 April 2026</p>
 
-      <div className="mt-8 space-y-6 rounded-2xl border border-slate-200 bg-white p-6 text-sm leading-relaxed text-slate-700 sm:p-8 sm:text-base">
+      <div className="mt-8 space-y-6 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-relaxed text-slate-700 sm:p-8 sm:text-base">
         <section>
           <h2 className="font-display text-lg font-bold text-[#2F3432]">1. Calculator Data Privacy</h2>
           <p className="mt-2">

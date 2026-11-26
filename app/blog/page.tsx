@@ -74,7 +74,7 @@ export default function BlogHubPage() {
       <Breadcrumbs items={breadcrumbs} />
 
       <header className="max-w-3xl">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
           NHS Pay, Pension &amp; Employment Guides
         </h1>
         <p className="mt-3 text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -137,7 +137,7 @@ export default function BlogHubPage() {
             <Link
               key={cat.slug}
               href={`/${cat.slug}/`}
-              className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-[#2F3432] transition-colors hover:border-[#0074BA] hover:text-[#0074BA]"
+              className="flex min-h-[44px] items-center rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-[#2F3432] transition-colors hover:border-[#0074BA] hover:text-[#0074BA]"
             >
               {cat.title}
             </Link>

@@ -64,7 +64,7 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
       <Breadcrumbs items={breadcrumbs} />
 
       <header className="max-w-3xl">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
           {calc.title}
         </h1>
         <p className="mt-3 text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -98,10 +98,10 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
       <AdSlot placement="below-intro" />
 
       {/* Educational content sections */}
-      <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-12">
-        <div className="space-y-10 lg:col-span-8">
+      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="min-w-0 space-y-10 lg:col-span-8">
           <section className="space-y-3">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-[#2F3432]">
+            <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
               How to Use This Calculator
             </h2>
             <ol className="space-y-2.5 text-sm leading-relaxed text-slate-700 sm:text-base">
@@ -117,7 +117,7 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
           </section>
 
           <section className="space-y-3">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-[#2F3432]">
+            <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
               How the Calculation Works
             </h2>
             {calc.howItWorks.map((p) => (
@@ -150,11 +150,11 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                   Estimated Output
                 </h3>
-                <dl className="mt-2 space-y-1.5 text-sm">
+                <dl className="mt-2 space-y-2 text-sm">
                   {calc.example.outputsSummary.map((out) => (
-                    <div key={out.label} className="flex items-center justify-between gap-2">
+                    <div key={out.label} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
                       <dt className="text-slate-600">{out.label}</dt>
-                      <dd className="font-mono font-semibold tabular-nums text-[#2F3432]">
+                      <dd className="text-right font-mono font-semibold tabular-nums text-[#2F3432]">
                         {out.value}
                       </dd>
                     </div>
@@ -196,7 +196,7 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
         </div>
 
         {/* Sidebar: Related Calculators, Guides & Official Sources */}
-        <aside className="space-y-6 lg:col-span-4">
+        <aside className="min-w-0 space-y-6 lg:col-span-4">
           <div className="rounded-2xl border border-slate-200 bg-white p-5">
             <h2 className="font-display text-base font-bold text-[#2F3432]">
               Related NHS Calculators
@@ -268,10 +268,10 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
                     href={src.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-semibold text-[#0074BA] hover:underline"
+                    className="inline-flex items-start gap-1.5 font-semibold text-[#0074BA] hover:underline"
                   >
                     <span>{src.title}</span>
-                    <ExternalLink className="h-3 w-3 shrink-0" aria-hidden="true" />
+                    <ExternalLink className="mt-0.5 h-3 w-3 shrink-0" aria-hidden="true" />
                   </a>
                   <p className="text-slate-500">{src.publisher}</p>
                   <p className="mt-0.5 text-slate-600">{src.description}</p>

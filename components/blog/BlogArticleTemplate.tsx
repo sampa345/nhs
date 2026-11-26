@@ -80,7 +80,7 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
           <span aria-hidden="true">·</span>
           <span>{article.readTime}</span>
         </div>
-        <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+        <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
           {article.title}
         </h1>
         <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -109,8 +109,8 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
 
       <AdSlot placement="below-intro" />
 
-      <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-12">
-        <div className="space-y-8 lg:col-span-8">
+      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="min-w-0 space-y-8 lg:col-span-8">
           {/* Table of contents */}
           <nav
             aria-label="Table of contents"
@@ -119,12 +119,12 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
             <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               In This Guide
             </h2>
-            <ul className="mt-3 space-y-2 text-sm">
+            <ul className="mt-2.5 space-y-1 text-sm sm:mt-3 sm:space-y-2">
               {article.sections.map((sec, idx) => (
                 <li key={sec.id}>
                   <a
                     href={`#${sec.id}`}
-                    className="font-medium text-[#0074BA] hover:underline"
+                    className="inline-flex min-h-[36px] items-center font-medium text-[#0074BA] hover:underline sm:min-h-0"
                   >
                     0{idx + 1}. {sec.heading}
                   </a>
@@ -134,8 +134,8 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
           </nav>
 
           {article.sections.map((sec, idx) => (
-            <section key={sec.id} id={sec.id} className="space-y-4">
-              <h2 className="font-display text-2xl font-bold tracking-tight text-[#2F3432]">
+            <section key={sec.id} id={sec.id} className="scroll-mt-20 space-y-4">
+              <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
                 {sec.heading}
               </h2>
               {sec.paragraphs.map((p) => (
@@ -146,15 +146,16 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
 
               {sec.table && (
                 <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-                  <div className="border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-600">
+                  <div className="border-b border-slate-200 bg-slate-50 px-3.5 py-3 text-xs font-semibold text-slate-600 sm:px-4">
                     {sec.table.caption}
                   </div>
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={sec.table.caption}>
                     <table className="w-full text-left text-xs sm:text-sm">
+                      <caption className="sr-only">{sec.table.caption}</caption>
                       <thead className="border-b border-slate-200 bg-white text-slate-600">
                         <tr>
                           {sec.table.headers.map((h) => (
-                            <th key={h} className="px-4 py-3 font-semibold whitespace-nowrap">
+                            <th key={h} scope="col" className="px-3.5 py-2.5 font-semibold whitespace-nowrap sm:px-4 sm:py-3">
                               {h}
                             </th>
                           ))}
@@ -166,7 +167,7 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
                             {row.map((cell, cIdx) => (
                               <td
                                 key={`${cell}-${cIdx}`}
-                                className={`px-4 py-3 whitespace-nowrap ${
+                                className={`px-3.5 py-2.5 whitespace-nowrap sm:px-4 sm:py-3 ${
                                   cIdx === 0
                                     ? 'font-semibold text-[#2F3432]'
                                     : 'font-mono tabular-nums text-slate-700'
@@ -188,7 +189,7 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
           ))}
 
           {/* Example Box */}
-          <section className="rounded-2xl border border-slate-200 bg-white p-6">
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
             <h2 className="font-display text-xl font-bold text-[#2F3432]">
               {article.exampleBox.title}
             </h2>
@@ -216,10 +217,10 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
                     href={src.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-medium text-[#0074BA] hover:underline"
+                    className="inline-flex items-start gap-1.5 font-medium text-[#0074BA] hover:underline"
                   >
                     <span>{src.title} ({src.publisher})</span>
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                    <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                   </a>
                 </li>
               ))}
@@ -228,7 +229,7 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
         </div>
 
         {/* Sidebar */}
-        <aside className="space-y-6 lg:col-span-4">
+        <aside className="min-w-0 space-y-6 lg:col-span-4">
           <div className="rounded-2xl border border-slate-200 bg-white p-5">
             <h2 className="font-display text-base font-bold text-[#2F3432]">
               Relevant Calculators

@@ -5,6 +5,8 @@ import { ALL_CALCULATORS } from '../data/calculators';
 import { CATEGORIES } from '../data/categories';
 import { BLOG_ARTICLES } from '../data/articles';
 import { HEADER_NAV_LINKS, HEADER_PRIMARY_CTA, FOOTER_COLUMNS } from '../data/navigation/links';
+import sitemap from '../app/sitemap';
+import { CANONICAL_ROUTE_PATHS, getSitemapRouteEntries, isValidW3cDate } from '../lib/seo/routes';
 
 const EXPECTED_CALCULATOR_SLUGS = [
   'nhs-pay-calculator',
@@ -51,19 +53,7 @@ for (const cat of CATEGORIES) {
   );
 }
 
-const validPaths = new Set<string>([
-  '/',
-  '/blog/',
-  '/about/',
-  '/contact/',
-  '/privacy-policy/',
-  '/terms-and-conditions/',
-  '/disclaimer/',
-  '/editorial-policy/',
-  ...CATEGORIES.map((c) => `/${c.slug}/`),
-  ...ALL_CALCULATORS.map((c) => `/${c.slug}/`),
-  ...BLOG_ARTICLES.map((a) => `/blog/${a.slug}/`),
-]);
+const validPaths = CANONICAL_ROUTE_PATHS;
 
 for (const link of [
   ...HEADER_NAV_LINKS,
@@ -304,6 +294,45 @@ for (const page of [
   assertValidGraph(`Governance:${page.path}`, graph, [page.type, 'BreadcrumbList']);
 }
 
+// 6. Centralized Route Registry & XML Sitemap Validation
+assert.equal(SITE_CONFIG.domain, 'https://nhsstaffcalculator.co.uk', 'SITE_CONFIG.domain must be lowercase');
+const routeEntries = getSitemapRouteEntries();
+const sitemapEntries = sitemap();
+
+assert.equal(routeEntries.length, 43, `Expected 43 canonical routes, got ${routeEntries.length}`);
+assert.equal(sitemapEntries.length, 43, `Expected 43 sitemap URLs, got ${sitemapEntries.length}`);
+
+const seenUrls = new Set<string>();
+for (const entry of sitemapEntries) {
+  assert.ok(!seenUrls.has(entry.url), `Duplicate sitemap URL: ${entry.url}`);
+  seenUrls.add(entry.url);
+
+  const parsed = new URL(entry.url);
+  assert.equal(parsed.protocol, 'https:', `Sitemap URL must use HTTPS: ${entry.url}`);
+  assert.equal(parsed.hostname, 'nhsstaffcalculator.co.uk', `Sitemap URL must use lowercase domain: ${entry.url}`);
+  assert.ok(parsed.pathname.endsWith('/'), `Sitemap URL must preserve trailing slash: ${entry.url}`);
+  assert.ok(validPaths.has(parsed.pathname), `Sitemap URL path missing from centralized registry: ${parsed.pathname}`);
+
+  if (!parsed.pathname.startsWith('/blog/') || parsed.pathname === '/blog/') {
+    const pageFile =
+      parsed.pathname === '/'
+        ? path.join(process.cwd(), 'app', 'page.tsx')
+        : path.join(process.cwd(), 'app', parsed.pathname.replace(/^\/|\/$/g, ''), 'page.tsx');
+    assert.ok(fs.existsSync(pageFile), `Missing App Router page file for sitemap route: ${pageFile}`);
+  } else {
+    const slug = parsed.pathname.replace(/^\/blog\/|\/$/g, '');
+    assert.ok(BLOG_ARTICLES.some((a) => a.slug === slug), `Missing blog article data for sitemap route: ${slug}`);
+  }
+
+  if (entry.lastModified !== undefined) {
+    const lastModStr =
+      entry.lastModified instanceof Date ? entry.lastModified.toISOString() : String(entry.lastModified);
+    assert.ok(isValidW3cDate(lastModStr), `Invalid W3C lastModified date on ${entry.url}: ${lastModStr}`);
+  }
+}
+
+assert.ok(!seenUrls.has(`${SITE_CONFIG.domain}/not-found/`), 'Error page must not be included in sitemap');
+
 console.log(
-  `SEO, Internal Link & JSON-LD Schema Integrity Passed: ${validPaths.size} canonical routes verified.`
+  `SEO, Internal Link, Sitemap & JSON-LD Schema Integrity Passed: ${validPaths.size} canonical routes verified.`
 );

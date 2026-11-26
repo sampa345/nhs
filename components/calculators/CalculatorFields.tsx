@@ -19,9 +19,9 @@ export function CalculatorCardLayout({
   results: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4 sm:px-6">
-        <div>
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3.5 sm:px-6 sm:py-4">
+        <div className="min-w-0">
           <h2 className="font-display text-base font-bold text-[#2F3432] sm:text-lg">
             {title}
           </h2>
@@ -32,7 +32,7 @@ export function CalculatorCardLayout({
         <button
           type="button"
           onClick={onReset}
-          className="inline-flex min-h-[40px] items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-[#149777] whitespace-nowrap shrink-0"
+          className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-[#149777] whitespace-nowrap shrink-0 sm:min-h-[40px]"
         >
           <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
           Reset
@@ -40,10 +40,10 @@ export function CalculatorCardLayout({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12">
-        <div className="border-b border-slate-200 p-5 sm:p-6 lg:col-span-5 lg:border-b-0 lg:border-r">
+        <div className="min-w-0 border-b border-slate-200 p-4 sm:p-6 lg:col-span-5 lg:border-b-0 lg:border-r">
           <div className="space-y-4">{children}</div>
         </div>
-        <div className="bg-[#F3F4F6]/60 p-5 sm:p-6 lg:col-span-7">
+        <div className="min-w-0 bg-[#F3F4F6]/60 p-4 sm:p-6 lg:col-span-7">
           <div className="space-y-5">{results}</div>
         </div>
       </div>
@@ -69,7 +69,7 @@ export function JurisdictionSelect({
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value as UkJurisdiction)}
-        className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+        className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
       >
         <option value="england">England (NHS Employers · 37.5h)</option>
         <option value="wales">Wales (NHS Wales · 37.5h)</option>
@@ -107,7 +107,7 @@ export function BandAndStepSelect({
           id="afc-band-select"
           value={bandId}
           onChange={(e) => onBandChange(e.target.value as AfcBandId)}
-          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
         >
           {scales.map((b) => (
             <option key={b.bandId} value={b.bandId}>
@@ -125,7 +125,7 @@ export function BandAndStepSelect({
           id="afc-step-select"
           value={safeStep}
           onChange={(e) => onStepChange(Number(e.target.value))}
-          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
         >
           {activeBand.points.map((pt, idx) => (
             <option key={pt.stepName} value={idx}>
@@ -154,7 +154,7 @@ export function HcasSelect({
         id="hcas-zone-select"
         value={value}
         onChange={(e) => onChange(e.target.value as HcasZone)}
-        className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+        className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
       >
         {(Object.keys(HCAS_RULES_2026_2027) as HcasZone[]).map((zone) => (
           <option key={zone} value={zone}>
@@ -187,7 +187,7 @@ export function StudentLoanSelect({
           id="student-loan-select"
           value={plan}
           onChange={(e) => onPlanChange(e.target.value as StudentLoanPlan)}
-          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432] focus:border-[#149777] focus:outline-none"
+          className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
         >
           {(Object.keys(STUDENT_LOAN_PLANS_2026_2027) as StudentLoanPlan[]).map((k) => {
             const cfg = STUDENT_LOAN_PLANS_2026_2027[k];
@@ -201,12 +201,12 @@ export function StudentLoanSelect({
         </select>
       </div>
 
-      <label className="flex min-h-[40px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
+      <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
         <input
           type="checkbox"
           checked={hasPostgrad}
           onChange={(e) => onPostgradChange(e.target.checked)}
-          className="h-4 w-4 rounded border-slate-300 text-[#149777] focus:ring-[#149777]"
+          className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777] focus:ring-[#149777]"
         />
         <span>Include Postgraduate Loan (6% above £21,000)</span>
       </label>
@@ -244,31 +244,34 @@ export function NumberField({
       <label htmlFor={id} className="block text-xs font-semibold text-[#2F3432]">
         {label}
       </label>
-      <div className="relative mt-1.5 flex items-center">
+      <div
+        className={`mt-1.5 flex h-11 w-full items-center rounded-lg border bg-white ${
+          error
+            ? 'border-red-500 focus-within:border-red-600'
+            : 'border-slate-200 focus-within:border-[#149777]'
+        }`}
+      >
         {prefix && (
-          <span className="pointer-events-none absolute left-3 text-sm font-medium text-slate-500">
+          <span className="pointer-events-none shrink-0 select-none pl-3 pr-1 text-sm font-medium text-slate-500">
             {prefix}
           </span>
         )}
         <input
           id={id}
           type="number"
+          inputMode="decimal"
           min={min}
           max={max}
           step={step}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={Boolean(error)}
-          className={`h-11 w-full rounded-lg border bg-white font-mono text-sm tabular-nums text-[#2F3432] focus:outline-none ${
-            prefix ? 'pl-8' : 'pl-3'
-          } ${suffix ? 'pr-14' : 'pr-3'} ${
-            error
-              ? 'border-red-500 focus:border-red-600'
-              : 'border-slate-200 focus:border-[#149777]'
-          }`}
+          className={`h-full min-w-0 flex-1 bg-transparent font-mono text-base tabular-nums text-[#2F3432] focus:outline-none sm:text-sm ${
+            prefix ? 'pl-1' : 'pl-3'
+          } ${suffix ? 'pr-1' : 'pr-3'}`}
         />
         {suffix && (
-          <span className="pointer-events-none absolute right-3 text-xs text-slate-500">
+          <span className="pointer-events-none shrink-0 select-none pl-1.5 pr-3 text-xs text-slate-500">
             {suffix}
           </span>
         )}
@@ -291,11 +294,11 @@ export function KpiGrid({
   items: { label: string; value: string; sublabel?: string; highlight?: boolean }[];
 }) {
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div aria-live="polite" className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {items.map((item) => (
         <div
           key={item.label}
-          className={`rounded-xl border p-4 ${
+          className={`min-w-0 rounded-xl border p-4 ${
             item.highlight
               ? 'border-[#149777] bg-[#149777] text-white'
               : 'border-slate-200 bg-white text-[#2F3432]'
@@ -305,7 +308,7 @@ export function KpiGrid({
             {item.label}
           </p>
           <p
-            className={`mt-1 font-mono text-xl font-bold tabular-nums sm:text-2xl ${
+            className={`mt-1 break-words font-mono text-lg font-bold tabular-nums sm:text-xl xl:text-2xl ${
               item.highlight ? 'text-white' : 'text-[#2F3432]'
             }`}
           >
@@ -331,22 +334,23 @@ export function BreakdownTable({
 }) {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-      <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
+      <div className="border-b border-slate-200 bg-slate-50 px-3.5 py-3 sm:px-4">
         <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-600">
           {title}
         </h3>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={title}>
+        <table className="w-full text-left text-xs sm:text-sm">
+          <caption className="sr-only">{title}</caption>
           <tbody className="divide-y divide-slate-100">
             {rows.map((row) => (
               <tr
                 key={row.label}
                 className={row.tone === 'total' ? 'bg-[#F3F4F6] font-semibold text-[#2F3432]' : ''}
               >
-                <td className="px-4 py-3 text-slate-700">{row.label}</td>
+                <td className="px-3.5 py-2.5 text-slate-700 sm:px-4 sm:py-3">{row.label}</td>
                 <td
-                  className={`px-4 py-3 text-right font-mono tabular-nums whitespace-nowrap ${
+                  className={`px-3.5 py-2.5 text-right font-mono tabular-nums sm:px-4 sm:py-3 sm:whitespace-nowrap ${
                     row.tone === 'deduction'
                       ? 'text-slate-700'
                       : row.tone === 'positive'

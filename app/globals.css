@@ -9,6 +9,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
     background-color: #FFFFFF;
     color: #2F3432;
     font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;

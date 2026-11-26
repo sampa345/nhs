@@ -68,7 +68,7 @@ export function CategoryHubTemplate({ category }: { category: CategoryDefinition
       <Breadcrumbs items={breadcrumbs} />
 
       <header className="max-w-3xl">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
           {category.title}
         </h1>
         <p className="mt-3 text-base leading-relaxed text-slate-600 sm:text-lg">
@@ -89,7 +89,7 @@ export function CategoryHubTemplate({ category }: { category: CategoryDefinition
             <Link
               key={calc.slug}
               href={`/${calc.slug}/`}
-              className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 transition-all hover:border-[#149777]/50 hover:shadow-md"
+              className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-5 transition-all hover:border-[#149777]/50 hover:shadow-md sm:p-6"
             >
               <div>
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-[#149777] transition-colors group-hover:bg-[#149777] group-hover:text-white">
@@ -114,8 +114,8 @@ export function CategoryHubTemplate({ category }: { category: CategoryDefinition
       <AdSlot placement="below-intro" />
 
       {/* Deep category explanation */}
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-        <h2 className="font-display text-2xl font-bold tracking-tight text-[#2F3432]">
+      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-8">
+        <h2 className="font-display text-xl font-bold tracking-tight text-[#2F3432] sm:text-2xl">
           {category.explanationTitle}
         </h2>
         <div className="mt-4 space-y-4 text-sm leading-relaxed text-slate-700 sm:text-base">
@@ -141,12 +141,12 @@ export function CategoryHubTemplate({ category }: { category: CategoryDefinition
       </div>
 
       {/* Related guides & FAQs */}
-      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12">
-        <div className="lg:col-span-8">
+      <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="min-w-0 lg:col-span-8">
           <FaqAccordion faqs={category.faqs} />
         </div>
 
-        <aside className="space-y-6 lg:col-span-4">
+        <aside className="min-w-0 space-y-6 lg:col-span-4">
           {relatedGuides.length > 0 && (
             <div className="rounded-2xl border border-slate-200 bg-white p-5">
               <h2 className="font-display text-base font-bold text-[#2F3432]">

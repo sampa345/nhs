@@ -1,6 +1,6 @@
 export const SITE_CONFIG = {
   name: 'NHS Staff Calculator',
-  domain: 'https://NHSStaffCalculator.co.uk',
+  domain: 'https://nhsstaffcalculator.co.uk',
   email: 'hello@nhsstaffcalculator.co.uk',
   taxYearLabel: '2026/2027',
   disclaimerText:
@@ -15,5 +15,5 @@ export function normalizeTrailingSlash(path: string): string {
 
 export function canonicalUrl(path: string): string {
   const normalized = normalizeTrailingSlash(path);
-  return `${SITE_CONFIG.domain}${normalized}`;
+  return `${SITE_CONFIG.domain.toLowerCase()}${normalized}`;
 }

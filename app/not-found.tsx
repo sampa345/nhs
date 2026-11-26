@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6">
       <p className="font-mono text-sm font-bold text-[#149777]">404 · Page Not Found</p>
-      <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+      <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
         We couldn&apos;t find that calculator or guide
       </h1>
       <p className="mt-3 max-w-lg text-sm leading-relaxed text-slate-600 sm:text-base">

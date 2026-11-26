@@ -8,6 +8,7 @@ import {
   canonicalUrl,
   SITE_CONFIG,
 } from '@/lib/seo/config';
+import { GOVERNANCE_CONTENT_DATES } from '@/lib/seo/routes';
 
 export const metadata = buildPageMetadata({
   title: 'Terms and Conditions | NHS Staff Calculator',
@@ -31,7 +32,7 @@ export default function TermsPage() {
       description:
         'Terms and Conditions governing use of the free UK NHS salary, pension, and employment calculators on NHSStaffCalculator.co.uk.',
       pageType: 'WebPage',
-      dateModified: '2026-04-10',
+      dateModified: GOVERNANCE_CONTENT_DATES[path],
       breadcrumbId: `${pageUrl}#breadcrumb`,
     }),
     buildBreadcrumbNode(breadcrumbs, path)
@@ -42,12 +43,12 @@ export default function TermsPage() {
       <JsonLd data={schemaGraph} />
       <Breadcrumbs items={breadcrumbs} />
 
-      <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
+      <h1 className="font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
         Terms and Conditions
       </h1>
       <p className="mt-2 text-xs text-slate-500">Last updated: 10 April 2026</p>
 
-      <div className="mt-8 space-y-6 rounded-2xl border border-slate-200 bg-white p-6 text-sm leading-relaxed text-slate-700 sm:p-8 sm:text-base">
+      <div className="mt-8 space-y-6 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-relaxed text-slate-700 sm:p-8 sm:text-base">
         <section>
           <h2 className="font-display text-lg font-bold text-[#2F3432]">1. Acceptance of Terms</h2>
           <p className="mt-2">

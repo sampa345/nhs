@@ -5,17 +5,17 @@ import { SITE_CONFIG } from '@/lib/seo/config';
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-[#F3F4F6] text-slate-600">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-14">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-5">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12 lg:py-14">
+        <div className="grid grid-cols-1 gap-8 sm:gap-10 md:grid-cols-2 lg:grid-cols-5">
           {FOOTER_COLUMNS.map((col) => (
             <div key={col.heading}>
               <h2 className="text-sm font-bold text-[#2F3432]">{col.heading}</h2>
-              <ul className="mt-3 space-y-2.5">
+              <ul className="mt-2.5 space-y-1 sm:mt-3 sm:space-y-2">
                 {col.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-slate-600 transition-colors hover:text-[#149777]"
+                      className="inline-flex min-h-[38px] items-center text-sm text-slate-600 transition-colors hover:text-[#149777] sm:min-h-[28px]"
                     >
                       {link.label}
                     </Link>

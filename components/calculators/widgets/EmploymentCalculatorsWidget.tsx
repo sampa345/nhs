@@ -215,7 +215,7 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
             id="sick-service-band"
             value={sickBand}
             onChange={(e) => setSickBand(e.target.value as typeof sickBand)}
-            className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-[#2F3432]"
+            className="mt-1.5 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-base text-[#2F3432] focus:border-[#149777] focus:outline-none sm:text-sm"
           >
             <option value="year-1">During 1st year (1m Full + 2m Half)</option>
             <option value="year-2">During 2nd year (2m Full + 2m Half)</option>
@@ -282,21 +282,21 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
         </>
       }>
         <NumberField id="mat-salary" label="Average Annual Gross NHS Earnings" prefix="£" value={annualSalaryStr} onChange={setAnnualSalaryStr} error={salaryVal.error} />
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={has12mNhs}
             onChange={(e) => setHas12mNhs(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
           />
           <span>12+ months continuous NHS service (OMP eligible)</span>
         </label>
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={has26wTrust}
             onChange={(e) => setHas26wTrust(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-[#149777]"
+            className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]"
           />
           <span>26+ weeks with current Trust (SMP eligible)</span>
         </label>
@@ -343,14 +343,15 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
       }>
         <NumberField id="pat-salary" label="Annual Gross NHS Salary" prefix="£" value={annualSalaryStr} onChange={setAnnualSalaryStr} error={salaryVal.error} />
         <div>
-          <span className="block text-xs font-semibold text-[#2F3432]">Paternity Leave Duration</span>
-          <div className="mt-1.5 grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1">
+          <span id="paternity-duration-label" className="block text-xs font-semibold text-[#2F3432]">Paternity Leave Duration</span>
+          <div role="group" aria-labelledby="paternity-duration-label" className="mt-1.5 grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1">
             {([1, 2] as const).map((w) => (
               <button
                 key={w}
                 type="button"
+                aria-pressed={paternityWeeks === w}
                 onClick={() => setPaternityWeeks(w)}
-                className={`min-h-[38px] rounded-md px-3 text-xs font-medium transition-colors ${
+                className={`min-h-[44px] rounded-md px-3 text-xs font-medium transition-colors ${
                   paternityWeeks === w ? 'bg-white text-[#149777] shadow-xs' : 'text-slate-600'
                 }`}
               >
@@ -359,12 +360,12 @@ export function EmploymentCalculatorsWidget({ slug }: { slug: string }) {
             ))}
           </div>
         </div>
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
-          <input type="checkbox" checked={has12mNhs} onChange={(e) => setHas12mNhs(e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-[#149777]" />
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
+          <input type="checkbox" checked={has12mNhs} onChange={(e) => setHas12mNhs(e.target.checked)} className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]" />
           <span>12+ months continuous NHS service (Full Pay)</span>
         </label>
-        <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
-          <input type="checkbox" checked={has26wTrust} onChange={(e) => setHas26wTrust(e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-[#149777]" />
+        <label className="flex min-h-[44px] cursor-pointer items-center gap-2.5 text-sm text-slate-700">
+          <input type="checkbox" checked={has26wTrust} onChange={(e) => setHas26wTrust(e.target.checked)} className="h-4 w-4 shrink-0 rounded border-slate-300 text-[#149777]" />
           <span>26+ weeks with current Trust (SPP)</span>
         </label>
       </CalculatorCardLayout>
