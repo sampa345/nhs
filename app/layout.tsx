@@ -4,8 +4,9 @@ import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { JsonLd } from '@/components/seo/JsonLd';
 import {
-  buildOrganizationSchema,
-  buildWebsiteSchema,
+  buildJsonLdGraph,
+  buildOrganizationNode,
+  buildWebsiteNode,
   SITE_CONFIG,
 } from '@/lib/seo/config';
 import './globals.css';
@@ -63,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${plusJakarta.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-white text-[#2F3432]" suppressHydrationWarning>
-        <JsonLd data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
+        <JsonLd data={buildJsonLdGraph(buildOrganizationNode(), buildWebsiteNode())} />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

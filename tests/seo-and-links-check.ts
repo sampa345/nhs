@@ -82,6 +82,23 @@ for (const calc of ALL_CALCULATORS) {
   }
 }
 
+import {
+  buildBlogNode,
+  buildBlogPostingNode,
+  buildBreadcrumbNode,
+  buildFaqNode,
+  buildItemListNode,
+  buildJsonLdGraph,
+  buildOrganizationNode,
+  buildWebApplicationNode,
+  buildWebPageNode,
+  buildWebsiteNode,
+  canonicalUrl,
+  SCHEMA_IDS,
+  SITE_CONFIG,
+} from '../lib/seo/config';
+import type { SchemaNode } from '../lib/seo/schema';
+
 for (const article of BLOG_ARTICLES) {
   assert.ok(validPaths.has(`/${article.relatedCategory}/`), `Broken category on ${article.slug}`);
   for (const calc of article.relatedCalculators) {
@@ -92,4 +109,201 @@ for (const article of BLOG_ARTICLES) {
   }
 }
 
-console.log(`SEO & Internal Link Integrity Passed: ${validPaths.size} canonical routes verified.`);
+function assertValidGraph(label: string, graph: { '@context': string; '@graph': SchemaNode[] }, expectedTypes: string[]) {
+  assert.equal(graph['@context'], 'https://schema.org', `${label}: invalid @context`);
+  const ids = new Set<string>();
+  const types = new Set<string>();
+  const serialized = JSON.stringify(graph);
+
+  assert.ok(!serialized.includes('SearchAction'), `${label}: unexpected deprecated SearchAction`);
+  assert.ok(!serialized.includes('AggregateRating'), `${label}: unexpected AggregateRating`);
+  assert.ok(!serialized.includes('"Review"'), `${label}: unexpected fake Review`);
+
+  for (const node of graph['@graph']) {
+    const id = node['@id'];
+    const type = node['@type'];
+    assert.equal(typeof id, 'string', `${label}: node missing string @id`);
+    assert.ok((id as string).startsWith(SITE_CONFIG.domain), `${label}: @id must use canonical domain: ${id}`);
+    assert.ok(!ids.has(id as string), `${label}: duplicate @id detected: ${id}`);
+    ids.add(id as string);
+    if (typeof type === 'string') types.add(type);
+  }
+
+  for (const t of expectedTypes) {
+    assert.ok(types.has(t), `${label}: missing expected @type "${t}"`);
+  }
+}
+
+// 1. Root Organization + WebSite
+const rootGraph = buildJsonLdGraph(buildOrganizationNode(), buildWebsiteNode());
+assertValidGraph('RootLayout', rootGraph, ['Organization', 'WebSite']);
+assert.equal(rootGraph['@graph'][0]['@id'], SCHEMA_IDS.organization);
+assert.equal(rootGraph['@graph'][1]['@id'], SCHEMA_IDS.website);
+
+// 2. Category Hubs
+for (const cat of CATEGORIES) {
+  const catCalcs = ALL_CALCULATORS.filter((c) => c.category === cat.slug);
+  const p = `/${cat.slug}/`;
+  const url = canonicalUrl(p);
+  const catGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path: p,
+      title: cat.metaTitle,
+      description: cat.metaDescription,
+      pageType: 'CollectionPage',
+      breadcrumbId: `${url}#breadcrumb`,
+      mainEntityId: `${url}#itemlist`,
+      aboutId: SCHEMA_IDS.organization,
+    }),
+    buildBreadcrumbNode(
+      [
+        { label: 'Home', href: '/' },
+        { label: cat.title, href: p },
+      ],
+      p
+    ),
+    buildItemListNode({
+      path: p,
+      name: cat.title,
+      items: catCalcs.map((c) => ({ name: c.shortTitle, path: `/${c.slug}/`, description: c.shortDescription })),
+    }),
+    buildFaqNode(cat.faqs, p)
+  );
+  assertValidGraph(`Category:${cat.slug}`, catGraph, ['CollectionPage', 'BreadcrumbList', 'ItemList', 'FAQPage']);
+}
+
+// 3. Individual Calculators
+for (const calc of ALL_CALCULATORS) {
+  const p = `/${calc.slug}/`;
+  const url = canonicalUrl(p);
+  const calcGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path: p,
+      title: calc.metaTitle,
+      description: calc.metaDescription,
+      pageType: 'WebPage',
+      dateModified: calc.lastUpdated,
+      breadcrumbId: `${url}#breadcrumb`,
+      mainEntityId: `${url}#webapp`,
+    }),
+    buildBreadcrumbNode(
+      [
+        { label: 'Home', href: '/' },
+        { label: calc.category, href: `/${calc.category}/` },
+        { label: calc.shortTitle, href: p },
+      ],
+      p
+    ),
+    buildWebApplicationNode({
+      path: p,
+      name: calc.title,
+      description: calc.metaDescription,
+      dateModified: calc.lastUpdated,
+    }),
+    buildFaqNode(calc.faqs, p)
+  );
+  assertValidGraph(`Calculator:${calc.slug}`, calcGraph, ['WebPage', 'BreadcrumbList', 'WebApplication', 'FAQPage']);
+}
+
+// 4. Blog Index + Blog Articles
+const blogGraph = buildJsonLdGraph(
+  buildWebPageNode({
+    path: '/blog/',
+    title: 'NHS Pay, Pension & Shift Guides (2026/2027) | NHS Staff Calculator',
+    description: 'Guides',
+    pageType: 'CollectionPage',
+    breadcrumbId: `${canonicalUrl('/blog/')}#breadcrumb`,
+    mainEntityId: `${canonicalUrl('/blog/')}#blog`,
+  }),
+  buildBlogNode({
+    path: '/blog/',
+    name: 'NHS Staff Calculator Blog',
+    description: 'Guides',
+    posts: BLOG_ARTICLES.map((a) => ({
+      title: a.title,
+      path: `/blog/${a.slug}/`,
+      publishedDate: a.publishedDate,
+      lastUpdated: a.lastUpdated,
+      image: { url: a.featuredImage.src, width: a.featuredImage.width, height: a.featuredImage.height },
+    })),
+  }),
+  buildBreadcrumbNode(
+    [
+      { label: 'Home', href: '/' },
+      { label: 'Blog', href: '/blog/' },
+    ],
+    '/blog/'
+  )
+);
+assertValidGraph('BlogIndex', blogGraph, ['CollectionPage', 'Blog', 'BreadcrumbList']);
+
+for (const article of BLOG_ARTICLES) {
+  const p = `/blog/${article.slug}/`;
+  const url = canonicalUrl(p);
+  const postGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path: p,
+      title: article.metaTitle,
+      description: article.metaDescription,
+      pageType: 'WebPage',
+      dateModified: article.lastUpdated,
+      breadcrumbId: `${url}#breadcrumb`,
+      mainEntityId: `${url}#blogposting`,
+    }),
+    buildBlogPostingNode({
+      path: p,
+      title: article.title,
+      description: article.metaDescription,
+      publishedDate: article.publishedDate,
+      lastUpdated: article.lastUpdated,
+      categoryLabel: article.categoryLabel,
+      image: {
+        url: article.featuredImage.src,
+        width: article.featuredImage.width,
+        height: article.featuredImage.height,
+        caption: article.featuredImage.caption,
+      },
+    }),
+    buildBreadcrumbNode(
+      [
+        { label: 'Home', href: '/' },
+        { label: 'Blog', href: '/blog/' },
+        { label: article.title, href: p },
+      ],
+      p
+    )
+  );
+  assertValidGraph(`BlogPost:${article.slug}`, postGraph, ['WebPage', 'BlogPosting', 'BreadcrumbList']);
+}
+
+// 5. Important Governance Pages
+for (const page of [
+  { path: '/about/', type: 'AboutPage' as const },
+  { path: '/contact/', type: 'ContactPage' as const },
+  { path: '/privacy-policy/', type: 'WebPage' as const },
+  { path: '/terms-and-conditions/', type: 'WebPage' as const },
+  { path: '/disclaimer/', type: 'WebPage' as const },
+  { path: '/editorial-policy/', type: 'WebPage' as const },
+]) {
+  const graph = buildJsonLdGraph(
+    buildWebPageNode({
+      path: page.path,
+      title: page.path,
+      description: 'Governance page',
+      pageType: page.type,
+      breadcrumbId: `${canonicalUrl(page.path)}#breadcrumb`,
+    }),
+    buildBreadcrumbNode(
+      [
+        { label: 'Home', href: '/' },
+        { label: page.path, href: page.path },
+      ],
+      page.path
+    )
+  );
+  assertValidGraph(`Governance:${page.path}`, graph, [page.type, 'BreadcrumbList']);
+}
+
+console.log(
+  `SEO, Internal Link & JSON-LD Schema Integrity Passed: ${validPaths.size} canonical routes verified.`
+);

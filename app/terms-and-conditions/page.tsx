@@ -1,6 +1,13 @@
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { buildBreadcrumbSchema, buildPageMetadata, SITE_CONFIG } from '@/lib/seo/config';
+import {
+  buildBreadcrumbNode,
+  buildJsonLdGraph,
+  buildPageMetadata,
+  buildWebPageNode,
+  canonicalUrl,
+  SITE_CONFIG,
+} from '@/lib/seo/config';
 
 export const metadata = buildPageMetadata({
   title: 'Terms and Conditions | NHS Staff Calculator',
@@ -15,9 +22,24 @@ export default function TermsPage() {
     { label: 'Terms & Conditions', href: '/terms-and-conditions/' },
   ];
 
+  const path = '/terms-and-conditions/';
+  const pageUrl = canonicalUrl(path);
+  const schemaGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path,
+      title: 'Terms and Conditions | NHS Staff Calculator',
+      description:
+        'Terms and Conditions governing use of the free UK NHS salary, pension, and employment calculators on NHSStaffCalculator.co.uk.',
+      pageType: 'WebPage',
+      dateModified: '2026-04-10',
+      breadcrumbId: `${pageUrl}#breadcrumb`,
+    }),
+    buildBreadcrumbNode(breadcrumbs, path)
+  );
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:py-12">
-      <JsonLd data={buildBreadcrumbSchema(breadcrumbs)} />
+      <JsonLd data={schemaGraph} />
       <Breadcrumbs items={breadcrumbs} />
 
       <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">

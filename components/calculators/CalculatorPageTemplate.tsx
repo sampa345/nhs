@@ -11,9 +11,12 @@ import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
 import { DynamicIcon } from '@/components/shared/IconMap';
 import { JsonLd } from '@/components/seo/JsonLd';
 import {
-  buildBreadcrumbSchema,
-  buildFaqSchema,
-  buildSoftwareAppSchema,
+  buildBreadcrumbNode,
+  buildFaqNode,
+  buildJsonLdGraph,
+  buildWebApplicationNode,
+  buildWebPageNode,
+  canonicalUrl,
 } from '@/lib/seo/config';
 import type { CalculatorDefinition } from '@/types/calculator';
 import { CalculatorWidgetDispatcher } from './CalculatorWidgetDispatcher';
@@ -31,19 +34,32 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
     { label: calc.shortTitle, href: `/${calc.slug}/` },
   ];
 
-  const schemas = [
-    buildBreadcrumbSchema(breadcrumbs),
-    buildSoftwareAppSchema({
+  const path = `/${calc.slug}/`;
+  const pageUrl = canonicalUrl(path);
+
+  const schemaGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path,
+      title: calc.metaTitle,
+      description: calc.metaDescription,
+      pageType: 'WebPage',
+      dateModified: calc.lastUpdated,
+      breadcrumbId: `${pageUrl}#breadcrumb`,
+      mainEntityId: `${pageUrl}#webapp`,
+    }),
+    buildBreadcrumbNode(breadcrumbs, path),
+    buildWebApplicationNode({
+      path,
       name: calc.title,
       description: calc.metaDescription,
-      path: `/${calc.slug}/`,
+      dateModified: calc.lastUpdated,
     }),
-    buildFaqSchema(calc.faqs),
-  ];
+    buildFaqNode(calc.faqs, path)
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
-      <JsonLd data={schemas} />
+      <JsonLd data={schemaGraph} />
 
       <Breadcrumbs items={breadcrumbs} />
 

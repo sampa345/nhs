@@ -2,7 +2,15 @@ import { Breadcrumbs } from '@/components/shared/Breadcrumbs';
 import { ContactForm } from '@/components/shared/ContactForm';
 import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { buildBreadcrumbSchema, buildPageMetadata, SITE_CONFIG } from '@/lib/seo/config';
+import {
+  buildBreadcrumbNode,
+  buildJsonLdGraph,
+  buildPageMetadata,
+  buildWebPageNode,
+  canonicalUrl,
+  SCHEMA_IDS,
+  SITE_CONFIG,
+} from '@/lib/seo/config';
 
 export const metadata = buildPageMetadata({
   title: 'Contact Us | NHS Staff Calculator',
@@ -17,9 +25,24 @@ export default function ContactPage() {
     { label: 'Contact', href: '/contact/' },
   ];
 
+  const path = '/contact/';
+  const pageUrl = canonicalUrl(path);
+  const schemaGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path,
+      title: 'Contact Us | NHS Staff Calculator',
+      description:
+        'Contact NHSStaffCalculator.co.uk with feedback on our 2026/2027 NHS calculators, dataset corrections, or accessibility suggestions.',
+      pageType: 'ContactPage',
+      breadcrumbId: `${pageUrl}#breadcrumb`,
+      mainEntityId: SCHEMA_IDS.organization,
+    }),
+    buildBreadcrumbNode(breadcrumbs, path)
+  );
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:py-12">
-      <JsonLd data={buildBreadcrumbSchema(breadcrumbs)} />
+      <JsonLd data={schemaGraph} />
       <Breadcrumbs items={breadcrumbs} />
 
       <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">

@@ -10,7 +10,15 @@ import { AdSlot } from '@/components/shared/AdSlot';
 import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
 import { DynamicIcon } from '@/components/shared/IconMap';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/seo/config';
+import {
+  buildBreadcrumbNode,
+  buildFaqNode,
+  buildItemListNode,
+  buildJsonLdGraph,
+  buildWebPageNode,
+  canonicalUrl,
+  SCHEMA_IDS,
+} from '@/lib/seo/config';
 import type { CategoryDefinition } from '@/types/calculator';
 
 export function CategoryHubTemplate({ category }: { category: CategoryDefinition }) {
@@ -27,14 +35,35 @@ export function CategoryHubTemplate({ category }: { category: CategoryDefinition
     { label: category.title, href: `/${category.slug}/` },
   ];
 
-  const schemas = [
-    buildBreadcrumbSchema(breadcrumbs),
-    buildFaqSchema(category.faqs),
-  ];
+  const path = `/${category.slug}/`;
+  const pageUrl = canonicalUrl(path);
+
+  const schemaGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path,
+      title: category.metaTitle,
+      description: category.metaDescription,
+      pageType: 'CollectionPage',
+      breadcrumbId: `${pageUrl}#breadcrumb`,
+      mainEntityId: `${pageUrl}#itemlist`,
+      aboutId: SCHEMA_IDS.organization,
+    }),
+    buildBreadcrumbNode(breadcrumbs, path),
+    buildItemListNode({
+      path,
+      name: category.title,
+      items: calculators.map((calc) => ({
+        name: calc.shortTitle,
+        path: `/${calc.slug}/`,
+        description: calc.shortDescription,
+      })),
+    }),
+    buildFaqNode(category.faqs, path)
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-      <JsonLd data={schemas} />
+      <JsonLd data={schemaGraph} />
 
       <Breadcrumbs items={breadcrumbs} />
 

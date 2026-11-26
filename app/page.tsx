@@ -23,7 +23,13 @@ import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
 import { ExpandableAboutSection } from '@/components/shared/ExpandableAboutSection';
 import { AdSlot } from '@/components/shared/AdSlot';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { buildFaqSchema, buildPageMetadata } from '@/lib/seo/config';
+import {
+  buildFaqNode,
+  buildJsonLdGraph,
+  buildPageMetadata,
+  buildWebPageNode,
+  SCHEMA_IDS,
+} from '@/lib/seo/config';
 
 export const metadata = buildPageMetadata({
   title: 'Free NHS Pay & Salary Calculators (2026/2027) | NHS Staff Calculator',
@@ -157,7 +163,19 @@ export default function HomePage() {
 
   return (
     <div className="bg-white pb-12">
-      <JsonLd data={buildFaqSchema(HOMEPAGE_FAQS)} />
+      <JsonLd
+        data={buildJsonLdGraph(
+          buildWebPageNode({
+            path: '/',
+            title: 'Free NHS Pay & Salary Calculators (2026/2027) | NHS Staff Calculator',
+            description:
+              'Calculate your NHS take-home pay, pension contributions, overtime, shift enhancements, annual leave, and tax for 2026/2027 across England, Scotland, Wales, and NI.',
+            pageType: 'WebPage',
+            aboutId: SCHEMA_IDS.organization,
+          }),
+          buildFaqNode(HOMEPAGE_FAQS, '/')
+        )}
+      />
       {/* Emerald Hero Banner matching screenshot */}
       <section className="bg-[#149777] px-4 pb-10 pt-5 text-white sm:px-6 sm:pb-12 sm:pt-7">
         <div className="mx-auto max-w-4xl text-center">

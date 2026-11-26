@@ -7,7 +7,14 @@ import { Breadcrumbs } from '@/components/shared/Breadcrumbs';
 import { AdSlot } from '@/components/shared/AdSlot';
 import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { buildBreadcrumbSchema, buildPageMetadata } from '@/lib/seo/config';
+import {
+  buildBlogNode,
+  buildBreadcrumbNode,
+  buildJsonLdGraph,
+  buildPageMetadata,
+  buildWebPageNode,
+  canonicalUrl,
+} from '@/lib/seo/config';
 
 export const metadata = buildPageMetadata({
   title: 'NHS Pay, Pension & Shift Guides (2026/2027) | NHS Staff Calculator',
@@ -28,9 +35,42 @@ export default function BlogHubPage() {
     { label: 'Blog', href: '/blog/' },
   ];
 
+  const path = '/blog/';
+  const pageUrl = canonicalUrl(path);
+
+  const schemaGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path,
+      title: 'NHS Pay, Pension & Shift Guides (2026/2027) | NHS Staff Calculator',
+      description:
+        'In-depth UK NHS pay guides explaining 2026/2027 Agenda for Change bands, NHSBSA & SPPA pension tiers, unsocial hours enhancements, and overtime rates.',
+      pageType: 'CollectionPage',
+      breadcrumbId: `${pageUrl}#breadcrumb`,
+      mainEntityId: `${pageUrl}#blog`,
+    }),
+    buildBlogNode({
+      path,
+      name: 'NHS Staff Calculator Blog',
+      description:
+        'Clear, factually checked explanations of NHS Agenda for Change pay bands, pension contribution brackets, unsocial hours, and overtime rules for 2026/2027.',
+      posts: BLOG_ARTICLES.map((article) => ({
+        title: article.title,
+        path: `/blog/${article.slug}/`,
+        publishedDate: article.publishedDate,
+        lastUpdated: article.lastUpdated,
+        image: {
+          url: article.featuredImage.src,
+          width: article.featuredImage.width,
+          height: article.featuredImage.height,
+        },
+      })),
+    }),
+    buildBreadcrumbNode(breadcrumbs, path)
+  );
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-      <JsonLd data={buildBreadcrumbSchema(breadcrumbs)} />
+      <JsonLd data={schemaGraph} />
       <Breadcrumbs items={breadcrumbs} />
 
       <header className="max-w-3xl">

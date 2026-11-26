@@ -9,7 +9,13 @@ import { AdSlot } from '@/components/shared/AdSlot';
 import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
 import { DynamicIcon } from '@/components/shared/IconMap';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { buildArticleSchema, buildBreadcrumbSchema } from '@/lib/seo/config';
+import {
+  buildBlogPostingNode,
+  buildBreadcrumbNode,
+  buildJsonLdGraph,
+  buildWebPageNode,
+  canonicalUrl,
+} from '@/lib/seo/config';
 import type { BlogArticle } from '@/types/seo';
 import { ReadingProgressBar } from './ReadingProgressBar';
 
@@ -28,14 +34,26 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
     { label: article.title, href: `/blog/${article.slug}/` },
   ];
 
-  const schemas = [
-    buildBreadcrumbSchema(breadcrumbs),
-    buildArticleSchema({
+  const path = `/blog/${article.slug}/`;
+  const pageUrl = canonicalUrl(path);
+
+  const schemaGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path,
+      title: article.metaTitle,
+      description: article.metaDescription,
+      pageType: 'WebPage',
+      dateModified: article.lastUpdated,
+      breadcrumbId: `${pageUrl}#breadcrumb`,
+      mainEntityId: `${pageUrl}#blogposting`,
+    }),
+    buildBlogPostingNode({
+      path,
       title: article.title,
       description: article.metaDescription,
-      path: `/blog/${article.slug}/`,
       publishedDate: article.publishedDate,
       lastUpdated: article.lastUpdated,
+      categoryLabel: article.categoryLabel,
       image: {
         url: article.featuredImage.src,
         width: article.featuredImage.width,
@@ -43,13 +61,14 @@ export function BlogArticleTemplate({ article }: { article: BlogArticle }) {
         caption: article.featuredImage.caption,
       },
     }),
-  ];
+    buildBreadcrumbNode(breadcrumbs, path)
+  );
 
   return (
     <>
       <ReadingProgressBar targetId="blog-article-body" />
       <article id="blog-article-body" className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-        <JsonLd data={schemas} />
+        <JsonLd data={schemaGraph} />
 
       <Breadcrumbs items={breadcrumbs} />
 

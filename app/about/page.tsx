@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/shared/Breadcrumbs';
 import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
-import { buildBreadcrumbSchema, buildPageMetadata } from '@/lib/seo/config';
+import {
+  buildBreadcrumbNode,
+  buildJsonLdGraph,
+  buildPageMetadata,
+  buildWebPageNode,
+  canonicalUrl,
+  SCHEMA_IDS,
+} from '@/lib/seo/config';
 import { JsonLd } from '@/components/seo/JsonLd';
 
 export const metadata = buildPageMetadata({
@@ -17,9 +24,24 @@ export default function AboutPage() {
     { label: 'About', href: '/about/' },
   ];
 
+  const path = '/about/';
+  const pageUrl = canonicalUrl(path);
+  const schemaGraph = buildJsonLdGraph(
+    buildWebPageNode({
+      path,
+      title: 'About NHS Staff Calculator | Independent UK NHS Payroll Tools',
+      description:
+        'Learn about NHSStaffCalculator.co.uk—an independent informational calculator platform built to help UK NHS staff understand pay, pensions, shifts, and leave.',
+      pageType: 'AboutPage',
+      breadcrumbId: `${pageUrl}#breadcrumb`,
+      mainEntityId: SCHEMA_IDS.organization,
+    }),
+    buildBreadcrumbNode(breadcrumbs, path)
+  );
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:py-12">
-      <JsonLd data={buildBreadcrumbSchema(breadcrumbs)} />
+      <JsonLd data={schemaGraph} />
       <Breadcrumbs items={breadcrumbs} />
 
       <h1 className="font-display text-3xl font-bold tracking-tight text-[#2F3432] sm:text-4xl">
