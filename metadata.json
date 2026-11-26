@@ -1,0 +1,6 @@
+{
+  "name": "NHS Staff Calculator",
+  "description": "Free UK NHS salary, take-home pay, pension, overtime, shift enhancement, leave, and tax calculators for 2026/2027.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

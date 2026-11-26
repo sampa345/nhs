@@ -1,0 +1,1220 @@
+# MASTER PROMPT: NHSStaffCalculator.co.uk
+## Complete UK NHS Salary & Employment Calculator Platform
+### Next.js | TypeScript | Tailwind CSS | Advanced SEO | Premium UI/UX | AdSense Ready
+
+---
+
+# 1. ROLE AND PROJECT OBJECTIVE
+
+Act as a world-class Senior Full-Stack Developer, Technical SEO Specialist, UK Payroll Calculation Specialist, Financial Calculator Engineer, UX/UI Designer, and Content Strategist.
+
+Your mission is to design and develop a complete, production-ready website for:
+
+**Domain: https://NHSStaffCalculator.co.uk/**
+
+Website Name: NHS Staff Calculator
+
+Primary Market: United Kingdom.
+
+Primary Audience:
+- NHS Nurses.
+- NHS Doctors.
+- Healthcare Assistants.
+- NHS Administrative Staff.
+- NHS Support Workers.
+- NHS Allied Health Professionals.
+- NHS Part-Time Employees.
+- NHS Bank Staff.
+- Other NHS Employees.
+
+The website will provide free online calculators for NHS salary, take-home pay, pension contributions, overtime, shift payments, employment entitlements, and tax deductions.
+
+The main business objective is to establish NHSStaffCalculator.co.uk as a useful and trustworthy online calculator platform for NHS employees.
+
+The website must focus on:
+
+1. Excellent user experience.
+2. Accurate calculations.
+3. Strong Google UK SEO.
+4. High-quality educational content.
+5. Strong internal linking.
+6. Fast performance.
+7. Mobile-first responsive design.
+8. Long-term organic traffic growth.
+9. Google AdSense readiness.
+
+Do not build a generic calculator template website.
+
+Build a complete, scalable, professionally designed NHS calculator platform.
+
+---
+
+# 2. DOMAIN AND BRAND IDENTITY
+
+Official Domain:
+
+https://NHSStaffCalculator.co.uk/
+
+Brand Name:
+
+NHS Staff Calculator
+
+Brand Positioning:
+
+A free and easy-to-use online calculator platform helping UK NHS employees understand their salary, pension contributions, take-home pay, overtime, shift payments, and employment entitlements.
+
+Brand Personality:
+
+- Professional.
+- Trustworthy.
+- Modern.
+- Helpful.
+- Transparent.
+- Simple.
+- User-friendly.
+
+Important Branding Restrictions:
+
+This is an independent informational calculator website.
+
+Do not claim that the website is officially operated, endorsed, affiliated with, or approved by the NHS or NHS England.
+
+Do not misuse NHS logos, official NHS branding, or protected trademarks.
+
+Clearly communicate that the platform is an independent tool and that calculations are estimates.
+
+Use the domain consistently across:
+- Metadata.
+- Canonical URLs.
+- Open Graph.
+- Sitemap.
+- Structured data.
+- Internal links.
+
+Production canonical domain:
+
+https://NHSStaffCalculator.co.uk/
+
+---
+
+# 3. TECHNOLOGY STACK
+
+Use the following technologies:
+
+Frontend:
+- Next.js with App Router.
+- TypeScript.
+- React.
+- Tailwind CSS.
+- Lucide Icons.
+
+Rendering:
+- Server Components by default.
+- Client Components only when necessary.
+- Static generation for suitable content pages.
+- Dynamic calculation functionality on calculator pages.
+
+Architecture:
+- Modular and reusable components.
+- Centralised calculation engine.
+- Centralised tax-year configuration.
+- Centralised SEO metadata configuration.
+- Centralised internal linking configuration.
+- Structured content data.
+- Reusable page templates.
+
+Code Quality:
+- Strict TypeScript.
+- Reusable components.
+- Clean folder structure.
+- No unnecessary dependencies.
+- No duplicated calculation logic.
+- No unnecessary JavaScript.
+- Maintainable and scalable code.
+
+Do not create an admin panel.
+
+Do not introduce an unnecessary backend or database.
+
+Use static content and code-based configuration wherever appropriate.
+
+---
+
+# 4. WEBSITE DESIGN SYSTEM AND UI/UX
+
+Create a premium, modern, minimal, professional calculator website.
+
+The design should feel like a premium financial technology platform rather than a basic healthcare website.
+
+Design Inspiration:
+
+Modern fintech dashboards, premium SaaS interfaces, and clean financial calculator platforms.
+
+Visual Style:
+
+- Modern glassmorphism.
+- Subtle translucent cards.
+- Soft shadows.
+- Light background.
+- Elegant rounded corners.
+- Subtle gradients.
+- Clean borders.
+- Premium typography.
+- Balanced whitespace.
+- Consistent spacing.
+- Beautiful icons.
+- Clear visual hierarchy.
+
+Suggested Colour Palette:
+
+Primary Navy: #14213D
+Secondary Blue: #2563EB
+Accent Emerald: #10B981
+Background: #F8FAFC
+Card Background: #FFFFFF
+Border: #E2E8F0
+Primary Text: #0F172A
+Secondary Text: #64748B
+
+Use subtle glass effects:
+
+- backdrop-filter blur.
+- Semi-transparent card backgrounds.
+- Subtle borders.
+- Soft shadows.
+
+Do not overuse glass effects.
+
+Maintain excellent text contrast and accessibility.
+
+Typography:
+
+Use a modern professional font such as Plus Jakarta Sans or Inter.
+
+Use a consistent typography scale for:
+- Main headings.
+- Section headings.
+- Body text.
+- Labels.
+- Calculator results.
+- Navigation.
+- Buttons.
+
+The design must look polished, distinctive, and consistent across every page.
+
+---
+
+# 5. MOBILE-FIRST RESPONSIVE DESIGN
+
+Mobile usability is a top priority.
+
+Design mobile screens first.
+
+Support:
+
+- Mobile phones.
+- Tablets.
+- Laptops.
+- Desktop screens.
+
+Requirements:
+
+- Responsive navigation.
+- Mobile hamburger menu.
+- Touch-friendly inputs.
+- Large readable buttons.
+- Responsive calculator layouts.
+- Mobile-friendly tables.
+- Responsive result cards.
+- No horizontal overflow.
+- Proper spacing.
+- Accessible forms.
+- Responsive footer.
+
+On mobile:
+
+The calculator interface must be easy to use without unnecessary scrolling.
+
+Display the calculator prominently near the top of each calculator page.
+
+Do not let advertising placeholders interfere with calculator usability.
+
+---
+
+# 6. FINAL WEBSITE URL ARCHITECTURE
+
+STRICTLY FOLLOW THE FOLLOWING URL STRUCTURE.
+
+All individual calculator pages must use root-level URLs.
+
+Do not nest individual calculator URLs inside category paths.
+
+Use consistent trailing slashes.
+
+## CATEGORY 1: NHS PAY CALCULATORS
+
+Category URL:
+
+/nhs-pay-calculators/
+
+Calculator Pages:
+
+/nhs-pay-calculator/
+/nhs-take-home-pay-calculator/
+/nhs-salary-calculator/
+/nhs-salary-after-tax-calculator/
+/nhs-band-calculator/
+/nhs-hourly-pay-calculator/
+/nhs-part-time-pay-calculator/
+
+## CATEGORY 2: NHS PENSION CALCULATORS
+
+Category URL:
+
+/nhs-pension-calculators/
+
+Calculator Pages:
+
+/nhs-pension-calculator/
+/nhs-pension-contribution-calculator/
+/nhs-pension-tax-relief-calculator/
+/nhs-pension-take-home-pay-calculator/
+
+## CATEGORY 3: NHS OVERTIME & SHIFT CALCULATORS
+
+Category URL:
+
+/nhs-shift-calculators/
+
+Calculator Pages:
+
+/nhs-overtime-calculator/
+/nhs-night-shift-pay-calculator/
+/nhs-weekend-pay-calculator/
+/nhs-unsocial-hours-calculator/
+/nhs-bank-holiday-pay-calculator/
+
+## CATEGORY 4: NHS EMPLOYMENT CALCULATORS
+
+Category URL:
+
+/nhs-employment-calculators/
+
+Calculator Pages:
+
+/nhs-annual-leave-calculator/
+/nhs-holiday-entitlement-calculator/
+/nhs-sick-pay-calculator/
+/nhs-maternity-pay-calculator/
+/nhs-paternity-pay-calculator/
+/nhs-redundancy-pay-calculator/
+
+## CATEGORY 5: NHS TAX CALCULATORS
+
+Category URL:
+
+/nhs-tax-calculators/
+
+Calculator Pages:
+
+/nhs-tax-calculator/
+/nhs-national-insurance-calculator/
+/nhs-salary-sacrifice-calculator/
+/nhs-student-loan-calculator/
+
+## BLOG SECTION
+
+Blog Hub:
+
+/blog/
+
+Blog Articles:
+
+/blog/nhs-pay-bands-explained/
+/blog/nhs-pension-contributions-explained/
+/blog/nhs-unsocial-hours-pay-explained/
+/blog/nhs-overtime-rates-explained/
+
+## IMPORTANT WEBSITE PAGES
+
+/about/
+/contact/
+/privacy-policy/
+/terms-and-conditions/
+/disclaimer/
+/editorial-policy/
+
+IMPORTANT:
+
+Preserve every specified URL.
+
+Do not create duplicate routes.
+
+Do not invent additional calculator pages without checking the keyword research and search intent.
+
+---
+
+# 7. HOMEPAGE DESIGN AND STRUCTURE
+
+Create a premium homepage that immediately communicates the website's purpose.
+
+Homepage Sections:
+
+1. Header and Navigation.
+2. Hero Section.
+3. Main Search Bar.
+4. Popular NHS Calculators.
+5. Calculator Category Cards.
+6. How NHS Staff Calculator Works.
+7. Featured Calculators.
+8. Latest NHS Guides.
+9. Why Use NHS Staff Calculator?
+10. Trust and Accuracy Information.
+11. FAQ Section.
+12. Footer.
+
+Hero Section:
+
+Main heading:
+
+"Free NHS Pay & Salary Calculators"
+
+Supporting description:
+
+"Calculate your NHS take-home pay, pension contributions, overtime, shift payments and employment entitlements with our easy-to-use online calculators."
+
+Primary CTA:
+
+"Explore NHS Calculators"
+
+Secondary CTA:
+
+"Read NHS Pay Guides"
+
+Include a search input allowing users to find calculators quickly.
+
+Popular Calculator Cards:
+
+- NHS Pay Calculator.
+- NHS Take Home Pay Calculator.
+- NHS Pension Calculator.
+- NHS Overtime Calculator.
+- NHS Band Calculator.
+- NHS Hourly Pay Calculator.
+
+Category Cards:
+
+- NHS Pay Calculators.
+- NHS Pension Calculators.
+- NHS Shift Calculators.
+- NHS Employment Calculators.
+- NHS Tax Calculators.
+
+Use modern cards with icons, short descriptions, and clear links.
+
+Do not overload the homepage with excessive text.
+
+---
+
+# 8. CATEGORY PAGE DESIGN
+
+Create five individual category landing pages.
+
+Each category page must be a useful content hub.
+
+Do not create thin category pages that only contain links.
+
+Each category page should include:
+
+1. Breadcrumbs.
+2. Unique H1.
+3. Helpful introduction.
+4. Category explanation.
+5. Calculator cards.
+6. Short descriptions of each calculator.
+7. Related guides.
+8. Frequently asked questions.
+9. Related categories.
+10. Internal links.
+
+Example:
+
+/nhs-pay-calculators/
+
+H1:
+
+"NHS Pay Calculators"
+
+Introduction:
+
+"Explore our free NHS pay calculators to estimate your salary, take-home pay, hourly earnings and part-time income."
+
+Each calculator card must have:
+- Calculator name.
+- Short description.
+- Relevant icon.
+- Clear CTA.
+- Correct URL.
+
+Create equivalent high-quality category pages for all five categories.
+
+---
+
+# 9. CALCULATOR FUNCTIONALITY
+
+Every calculator must be fully functional.
+
+Do not create static calculator mockups.
+
+Every calculator should have its own calculation logic based on its actual purpose.
+
+General Requirements:
+
+- Real-time calculations where appropriate.
+- Input validation.
+- Sensible default values.
+- Reset functionality.
+- Clear calculation results.
+- GBP currency formatting.
+- Calculation breakdown.
+- Explanation of assumptions.
+- Mobile-friendly inputs.
+- Error handling.
+- Accessible labels.
+- Helpful tooltips.
+- Accurate rounding.
+
+Use TypeScript calculation functions.
+
+Keep calculation logic separate from UI components.
+
+Use automated unit tests for calculation functions.
+
+Never silently return misleading results for missing data.
+
+Where information is incomplete, clearly identify the limitation.
+
+---
+
+# 10. NHS PAY AND UK PAYROLL ACCURACY
+
+This is one of the most important requirements.
+
+The website must never invent NHS salary figures, tax rates, pension contribution rates, or payroll rules.
+
+Use authoritative information from:
+
+- NHS Employers.
+- NHS Business Services Authority.
+- NHS Pension Scheme.
+- GOV.UK.
+- HMRC.
+- Relevant official NHS workforce and employment documentation.
+
+Use the correct information for the applicable tax year and NHS pay framework.
+
+Support relevant differences between:
+
+- England.
+- Wales.
+- Scotland.
+- Northern Ireland.
+
+Do not assume that all UK NHS employees follow identical pay arrangements.
+
+Where relevant, distinguish between Agenda for Change staff and medical and dental staff.
+
+Use configurable datasets.
+
+Every dataset must include:
+
+- Applicable tax or financial year.
+- Jurisdiction.
+- Official source.
+- Effective date.
+- Last verified date.
+- Calculation assumptions.
+
+When official figures are unavailable, do not fabricate them.
+
+Use a clearly labelled manual input or explain that the relevant calculation cannot yet be verified.
+
+---
+
+# 11. TAX YEAR 2026/2027 SUPPORT
+
+Primary tax year:
+
+2026/2027.
+
+Design the calculation engine so that tax-year rules can be updated without rebuilding the entire website.
+
+Implement a centralised tax-year configuration.
+
+Example structure:
+
+taxYears/
+  2026-2027/
+    incomeTax.ts
+    nationalInsurance.ts
+    pension.ts
+    studentLoan.ts
+    salaryData.ts
+
+Keep each calculation system separate.
+
+Important:
+
+The 2026/2027 tax year runs from 6 April 2026 to 5 April 2027.
+
+Do not automatically apply one UK tax jurisdiction's thresholds or rates to all users.
+
+Use the correct jurisdiction-specific rules.
+
+Do not hardcode unverified values.
+
+Clearly identify calculations that depend on personal circumstances.
+
+Allow the website to display which tax year is currently selected.
+
+---
+
+# 12. INDIVIDUAL CALCULATOR REQUIREMENTS
+
+Develop the following calculators.
+
+## NHS PAY CALCULATORS
+
+1. NHS Pay Calculator
+2. NHS Take Home Pay Calculator
+3. NHS Salary Calculator
+4. NHS Salary After Tax Calculator
+5. NHS Band Calculator
+6. NHS Hourly Pay Calculator
+7. NHS Part-Time Pay Calculator
+
+## NHS PENSION CALCULATORS
+
+8. NHS Pension Calculator
+9. NHS Pension Contribution Calculator
+10. NHS Pension Tax Relief Calculator
+11. NHS Pension Take Home Pay Calculator
+
+## NHS SHIFT CALCULATORS
+
+12. NHS Overtime Calculator
+13. NHS Night Shift Pay Calculator
+14. NHS Weekend Pay Calculator
+15. NHS Unsocial Hours Calculator
+16. NHS Bank Holiday Pay Calculator
+
+## NHS EMPLOYMENT CALCULATORS
+
+17. NHS Annual Leave Calculator
+18. NHS Holiday Entitlement Calculator
+19. NHS Sick Pay Calculator
+20. NHS Maternity Pay Calculator
+21. NHS Paternity Pay Calculator
+22. NHS Redundancy Pay Calculator
+
+## NHS TAX CALCULATORS
+
+23. NHS Tax Calculator
+24. NHS National Insurance Calculator
+25. NHS Salary Sacrifice Calculator
+26. NHS Student Loan Calculator
+
+Every calculator must have:
+
+- Unique calculation functionality.
+- Unique page content.
+- Unique SEO metadata.
+- Relevant input fields.
+- Accurate calculation logic.
+- Results breakdown.
+- Explanation.
+- Examples.
+- FAQs.
+- Related calculators.
+- Relevant guides.
+- Official references.
+
+Do not create different pages that are simply copies of the same calculator with different titles.
+
+If two calculators have overlapping functionality, implement clearly differentiated user needs and search intents.
+
+---
+
+# 13. CALCULATOR PAGE CONTENT TEMPLATE
+
+Use a consistent but flexible page structure.
+
+Every calculator page should contain:
+
+1. Breadcrumb navigation.
+2. SEO-optimised H1.
+3. Short introduction.
+4. Calculator interface.
+5. Results summary.
+6. Detailed calculation breakdown.
+7. How to use the calculator.
+8. How the calculation works.
+9. Relevant NHS or UK payroll information.
+10. Example calculation.
+11. Important assumptions.
+12. Limitations.
+13. Frequently asked questions.
+14. Related calculators.
+15. Related guides.
+16. Official sources.
+
+The calculator interface should appear near the top of the page.
+
+The content must be genuinely useful and not merely written to increase word count.
+
+Use British English throughout.
+
+---
+
+# 14. ADVANCED INTERNAL LINKING STRATEGY
+
+Internal linking is a major SEO priority.
+
+Build a complete hub-and-spoke architecture.
+
+Main structure:
+
+Homepage
+  |
+  |-- NHS Pay Calculators
+  |-- NHS Pension Calculators
+  |-- NHS Shift Calculators
+  |-- NHS Employment Calculators
+  |-- NHS Tax Calculators
+  |-- Blog
+
+Category pages link to all their relevant calculators.
+
+Every calculator page must link to:
+
+- Its parent category.
+- Relevant related calculators.
+- Relevant blog guides.
+- Other useful educational content.
+
+Every blog article must link to:
+
+- At least one relevant calculator.
+- Relevant category page.
+- Other related guides where appropriate.
+
+Examples:
+
+NHS Pay Calculator should link to:
+- NHS Take Home Pay Calculator.
+- NHS Salary Calculator.
+- NHS Band Calculator.
+- NHS Pay Bands Explained.
+
+NHS Pension Calculator should link to:
+- NHS Pension Contribution Calculator.
+- NHS Pension Tax Relief Calculator.
+- NHS Pension Take Home Pay Calculator.
+- NHS Pension Contributions Explained.
+
+NHS Overtime Calculator should link to:
+- NHS Night Shift Pay Calculator.
+- NHS Weekend Pay Calculator.
+- NHS Unsocial Hours Calculator.
+- NHS Overtime Rates Explained.
+
+Create a centralised internal linking configuration.
+
+Use natural descriptive anchor text.
+
+Avoid excessive exact-match anchor text.
+
+All internal links must resolve correctly.
+
+Do not create orphan pages.
+
+---
+
+# 15. BLOG AND EDUCATIONAL GUIDES
+
+Create a dedicated blog section.
+
+Blog URL:
+
+/blog/
+
+Initial articles:
+
+/blog/nhs-pay-bands-explained/
+/blog/nhs-pension-contributions-explained/
+/blog/nhs-unsocial-hours-pay-explained/
+/blog/nhs-overtime-rates-explained/
+
+Article Requirements:
+
+- Unique title.
+- SEO-friendly URL.
+- Clear introduction.
+- Table of contents.
+- Logical H2 and H3 structure.
+- Helpful explanations.
+- Relevant tables.
+- Realistic examples.
+- Official source references.
+- Last updated date.
+- Author/editor information.
+- Related calculator links.
+- Related articles.
+
+Use original, helpful, factually accurate British English content.
+
+Do not create automatically generated thin content.
+
+Do not invent author qualifications, credentials, or first-hand experience.
+
+Make it clear when an article is informational rather than professional financial, legal, or payroll advice.
+
+---
+
+# 16. ADVANCED ON-PAGE SEO
+
+Every page must have unique metadata.
+
+Implement:
+
+- Unique SEO title.
+- Unique meta description.
+- One main H1.
+- Logical H2/H3 structure.
+- Primary keyword targeting.
+- Natural keyword variations.
+- Semantic HTML.
+- Descriptive image alt text.
+- Contextual internal links.
+- Breadcrumb navigation.
+- Canonical URLs.
+
+Technical SEO:
+
+- XML sitemap.
+- robots.txt.
+- Canonical URL configuration.
+- Open Graph metadata.
+- Twitter metadata.
+- Proper 404 page.
+- Correct HTTP status codes.
+- Redirect handling.
+- Clean URL structure.
+- No accidental noindex tags.
+
+Structured Data:
+
+Use appropriate schema where eligible:
+
+- Organization.
+- WebSite.
+- BreadcrumbList.
+- Article.
+- SoftwareApplication where the implementation genuinely qualifies.
+
+Do not add fake reviews, ratings, or misleading schema.
+
+Ensure schema matches the visible page content.
+
+---
+
+# 17. GOOGLE ADSENSE READINESS
+
+Prepare the website for Google AdSense.
+
+Requirements:
+
+- Original and helpful content.
+- Functional calculators.
+- Clear website navigation.
+- About page.
+- Contact page.
+- Privacy policy.
+- Terms and conditions.
+- Disclaimer.
+- Editorial policy.
+- Mobile responsiveness.
+- Fast loading.
+- No intrusive advertisements.
+
+Create reserved advertisement placements:
+
+- Below the introductory content.
+- Between suitable content sections.
+- Within longer educational articles.
+- Near the end of relevant content.
+
+Do not place advertisements where they interfere with calculator inputs or results.
+
+Avoid accidental ad clicks.
+
+Do not promise AdSense approval.
+
+Keep advertising placements configurable.
+
+---
+
+# 18. TRUST, TRANSPARENCY AND E-E-A-T
+
+This website provides calculations related to employment, salaries, pensions, and taxation.
+
+Build trust through:
+
+- Transparent calculation methodology.
+- Official references.
+- Clear assumptions.
+- Accurate update dates.
+- Editorial policy.
+- About page.
+- Contact page.
+- Calculator limitations.
+- Jurisdiction-specific information.
+
+Never claim official NHS affiliation.
+
+Include a visible disclaimer:
+
+"NHS Staff Calculator is an independent informational website and is not affiliated with or endorsed by the NHS. Calculator results are estimates and should not be treated as official payroll, pension, tax, or employment advice."
+
+Where relevant, recommend checking actual payroll information with the employer or appropriate official authority.
+
+Do not collect unnecessary personal or financial information.
+
+Keep calculator inputs client-side wherever possible.
+
+---
+
+# 19. PERFORMANCE AND ACCESSIBILITY
+
+Optimise for Google Core Web Vitals:
+
+- LCP.
+- INP.
+- CLS.
+
+Requirements:
+
+- Fast initial loading.
+- Optimised images.
+- Optimised fonts.
+- Minimal JavaScript.
+- No unnecessary animations.
+- Semantic HTML.
+- Keyboard accessibility.
+- Visible focus states.
+- Proper form labels.
+- Accessible colour contrast.
+- Responsive components.
+
+Follow WCAG accessibility principles.
+
+Do not sacrifice accessibility for visual effects.
+
+---
+
+# 20. REUSABLE COMPONENT ARCHITECTURE
+
+Create reusable components:
+
+- Header.
+- Desktop navigation.
+- Mobile navigation.
+- Footer.
+- Hero section.
+- Search bar.
+- Calculator category cards.
+- Calculator cards.
+- Calculator form.
+- Input fields.
+- Result summary cards.
+- Calculation breakdown.
+- FAQ accordion.
+- Breadcrumbs.
+- Related calculators.
+- Related articles.
+- Article table of contents.
+- Source references.
+- Advertisement placeholders.
+- Disclaimer component.
+
+Use consistent spacing, typography, colours, and interaction patterns.
+
+---
+
+# 21. SUGGESTED PROJECT FOLDER STRUCTURE
+
+Organise the project cleanly.
+
+Suggested structure:
+
+src/
+  app/
+    page.tsx
+
+    nhs-pay-calculators/
+      page.tsx
+
+    nhs-pension-calculators/
+      page.tsx
+
+    nhs-shift-calculators/
+      page.tsx
+
+    nhs-employment-calculators/
+      page.tsx
+
+    nhs-tax-calculators/
+      page.tsx
+
+    nhs-pay-calculator/
+      page.tsx
+
+    nhs-take-home-pay-calculator/
+      page.tsx
+
+    blog/
+      page.tsx
+
+    about/
+      page.tsx
+
+    contact/
+      page.tsx
+
+    privacy-policy/
+      page.tsx
+
+    terms-and-conditions/
+      page.tsx
+
+    disclaimer/
+      page.tsx
+
+    editorial-policy/
+      page.tsx
+
+  components/
+    layout/
+    navigation/
+    calculators/
+    categories/
+    blog/
+    seo/
+    shared/
+
+  lib/
+    calculations/
+    tax-years/
+    nhs-pay-data/
+    seo/
+    internal-links/
+    validation/
+    formatting/
+
+  data/
+    calculators/
+    categories/
+    articles/
+    navigation/
+
+  types/
+    calculator.ts
+    payroll.ts
+    seo.ts
+
+  tests/
+    calculations/
+
+This is a suggested architecture.
+
+Maintain the specified root-level URLs using the Next.js App Router.
+
+---
+
+# 22. DEVELOPMENT PHASES
+
+Do not attempt to generate the entire website as one unstructured block.
+
+Follow this phased workflow.
+
+PHASE 1: PROJECT FOUNDATION
+- Initialise project.
+- Configure Next.js.
+- Configure TypeScript.
+- Configure Tailwind CSS.
+- Set up global styles.
+- Build design system.
+- Configure fonts.
+- Create reusable components.
+
+PHASE 2: WEBSITE UI/UX
+- Build homepage.
+- Build header and navigation.
+- Build mobile menu.
+- Build footer.
+- Build category cards.
+- Build calculator cards.
+- Build responsive layouts.
+
+PHASE 3: WEBSITE ARCHITECTURE
+- Implement all category routes.
+- Implement calculator route structure.
+- Implement blog hub.
+- Implement important pages.
+- Configure breadcrumbs.
+
+PHASE 4: CALCULATOR ENGINE
+- Build calculation utilities.
+- Configure 2026/2027 datasets.
+- Implement validation.
+- Implement individual calculators.
+- Write calculation tests.
+- Verify results against official examples.
+
+PHASE 5: CONTENT DEVELOPMENT
+- Create category content.
+- Create calculator introductions.
+- Write calculation explanations.
+- Create FAQs.
+- Create blog articles.
+- Add official references.
+
+PHASE 6: INTERNAL LINKING
+- Implement central link configuration.
+- Connect category pages.
+- Connect related calculators.
+- Connect blog articles.
+- Check orphan pages.
+- Check broken links.
+
+PHASE 7: ADVANCED SEO
+- Add metadata.
+- Add structured data.
+- Add canonical URLs.
+- Generate sitemap.
+- Configure robots.txt.
+- Add Open Graph metadata.
+
+PHASE 8: PERFORMANCE AND QUALITY ASSURANCE
+- Test mobile layouts.
+- Test desktop layouts.
+- Test all calculators.
+- Test calculation accuracy.
+- Test accessibility.
+- Test broken links.
+- Test Core Web Vitals.
+- Test sitemap and metadata.
+
+PHASE 9: PRODUCTION READINESS
+- Configure production domain.
+- Verify canonical domain.
+- Configure deployment.
+- Verify HTTPS.
+- Prepare Google Search Console.
+- Prepare Google AdSense integration.
+
+---
+
+# 23. FINAL QUALITY CONTROL CHECKLIST
+
+Before considering the project complete, verify:
+
+[ ] Domain branding uses NHSStaffCalculator.co.uk.
+
+[ ] All specified URLs work correctly.
+
+[ ] All five category pages are complete.
+
+[ ] All 26 calculator pages are functional.
+
+[ ] No calculator is just a static mockup.
+
+[ ] Calculation logic has been tested.
+
+[ ] 2026/2027 tax year configuration exists.
+
+[ ] UK jurisdiction differences are handled.
+
+[ ] Official data sources are referenced.
+
+[ ] Every page has unique metadata.
+
+[ ] Internal links work correctly.
+
+[ ] No orphan pages exist.
+
+[ ] Breadcrumbs work correctly.
+
+[ ] Blog section is functional.
+
+[ ] Important legal pages exist.
+
+[ ] Sitemap is valid.
+
+[ ] robots.txt is configured.
+
+[ ] Canonical URLs are correct.
+
+[ ] Structured data is valid.
+
+[ ] Mobile responsiveness is verified.
+
+[ ] No horizontal overflow exists.
+
+[ ] Core Web Vitals are optimised.
+
+[ ] No unnecessary admin panel exists.
+
+[ ] No fake data or invented official figures exist.
+
+[ ] Independent website disclaimer is visible.
+
+---
+
+# 24. FINAL INSTRUCTIONS
+
+Build NHSStaffCalculator.co.uk as a complete, modern, trustworthy, UK-focused NHS calculator platform.
+
+Prioritise:
+
+1. Calculation accuracy.
+2. Excellent user experience.
+3. Google UK SEO.
+4. Strong topical authority.
+5. Useful educational content.
+6. Internal linking.
+7. Mobile-first performance.
+8. Scalability.
+9. AdSense readiness.
+
+Do not create an admin panel.
+
+Do not use fake NHS figures.
+
+Do not use placeholder functionality for calculators.
+
+Do not create thin SEO pages.
+
+Do not change the specified URL architecture.
+
+Do not claim official NHS affiliation.
+
+Do not sacrifice functionality for visual appearance.
+
+The final result must be a polished, fully functional, production-ready website that genuinely helps UK NHS employees understand their pay, pension, tax, shifts, and employment entitlements.
+
+Start by analysing the project requirements and building the design system and project foundation. Then implement the website in the defined development phases.
+
+At the end of each phase, provide a concise implementation summary, completed features, outstanding tasks, and any assumptions requiring verification.
+
+Do not stop after creating a visual mockup. Continue implementing the actual working website.

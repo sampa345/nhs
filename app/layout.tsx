@@ -1,0 +1,73 @@
+import type { Metadata } from 'next';
+import { DM_Sans, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
+import { SiteHeader } from '@/components/layout/SiteHeader';
+import { SiteFooter } from '@/components/layout/SiteFooter';
+import { JsonLd } from '@/components/seo/JsonLd';
+import {
+  buildOrganizationSchema,
+  buildWebsiteSchema,
+  SITE_CONFIG,
+} from '@/lib/seo/config';
+import './globals.css';
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-dm-sans',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_CONFIG.domain),
+  title: {
+    default: 'NHS Staff Calculator | Free UK NHS Pay, Pension & Tax Calculators',
+    template: '%s | NHS Staff Calculator',
+  },
+  description:
+    'Free UK NHS salary, take-home pay, pension, overtime, shift enhancement, leave, and tax calculators updated for the 2026/2027 tax year.',
+  openGraph: {
+    title: 'NHS Staff Calculator | Free UK NHS Pay, Pension & Tax Calculators',
+    description:
+      'Free UK NHS salary, take-home pay, pension, overtime, shift enhancement, leave, and tax calculators updated for the 2026/2027 tax year.',
+    url: `${SITE_CONFIG.domain}/`,
+    siteName: SITE_CONFIG.name,
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NHS Staff Calculator | Free UK NHS Pay, Pension & Tax Calculators',
+    description:
+      'Calculate your NHS take-home pay, pension contributions, overtime, shift payments, and employment entitlements for 2026/2027.',
+  },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html
+      lang="en-GB"
+      className={`${plusJakarta.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="min-h-screen flex flex-col bg-white text-[#2F3432]" suppressHydrationWarning>
+        <JsonLd data={[buildOrganizationSchema(), buildWebsiteSchema()]} />
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
+      </body>
+    </html>
+  );
+}
