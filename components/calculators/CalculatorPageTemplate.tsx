@@ -8,6 +8,7 @@ import { Breadcrumbs } from '@/components/shared/Breadcrumbs';
 import { FaqAccordion } from '@/components/shared/FaqAccordion';
 import { AdSlot } from '@/components/shared/AdSlot';
 import { DisclaimerBanner } from '@/components/shared/DisclaimerBanner';
+import { ExpandableIntro } from '@/components/shared/ExpandableIntro';
 import { DynamicIcon } from '@/components/shared/IconMap';
 import { JsonLd } from '@/components/seo/JsonLd';
 import {
@@ -67,9 +68,7 @@ export function CalculatorPageTemplate({ calc }: { calc: CalculatorDefinition })
         <h1 className="font-display text-2xl font-bold tracking-tight text-[#2F3432] sm:text-3xl lg:text-4xl">
           {calc.title}
         </h1>
-        <p className="mt-3 text-base leading-relaxed text-slate-600 sm:text-lg">
-          {calc.intro}
-        </p>
+        <ExpandableIntro text={calc.intro} />
         <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
           {category && (
             <>
